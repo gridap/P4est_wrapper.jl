@@ -1,0 +1,13 @@
+name = "p4est_wrapper"
+uuid = "3743d7c0-8adf-11ea-380b-7d33b0ecc1da"
+authors = ["Víctor Sande <vsande@cimne.upc.edu>", "Large Scale Scientific Computing"]
+version = "0.1.0"
+
+[compat]
+julia = "1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
