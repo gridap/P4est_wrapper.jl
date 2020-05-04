@@ -1,5 +1,5 @@
 # Documentation: http://docs.travis-ci.com/user/languages/julia/
-dist: trusty
+dist: xenial
 language: julia
 os:
   - linux
@@ -12,7 +12,10 @@ addons:
     packages:
       - wget
       - gfortran
+      - g++
       - openmpi-bin
+      - libopenmpi1.10 
+      - libopenmpi-dev
 before_script:
   - # Install p4est 2.2 from sources
   - PACKAGE=p4est
@@ -28,7 +31,7 @@ before_script:
   - mkdir -p $SOURCES_DIR
   - tar xzf $ROOT_DIR/$TAR_FILE -C $SOURCES_DIR --strip-components=1
   - cd $SOURCES_DIR
-  - ./configure --prefix=$P4EST_INSTALL --without-blas --without-lapack --enable-mpi
+  - ./configure --prefix=$P4EST_INSTALL --without-blas --without-lapack --enable-mpi --disable-dependency-tracking
   - make --quiet
   - make --quiet install
   - rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
