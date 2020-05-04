@@ -17,6 +17,7 @@ addons:
       - libopenmpi-dev
 before_script:
   - # Install p4est 2.2 from sources
+  - CURR_DIR=$(pwd)
   - PACKAGE=p4est
   - VERSION=2.2
   - INSTALL_ROOT=/opt
@@ -35,6 +36,7 @@ before_script:
   - make --quiet install
   - rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
   - export P4EST_ROOT_DIR=$P4EST_INSTALL
+  - cd $CURR_DIR
 notifications:
   email: false
 after_success:
