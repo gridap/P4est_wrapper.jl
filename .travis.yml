@@ -11,6 +11,7 @@ addons:
     update: true
     packages:
       - wget
+      - gfortran
       - openmpi-bin
 before_script:
   - # Install p4est 2.2 from sources
