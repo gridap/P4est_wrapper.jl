@@ -54,33 +54,49 @@ ctx.options["is_struct_mutable"] = false
 api_file = joinpath(@__DIR__, P4EST_API_FILE)
 api_stream = open(api_file, "w")
 
-for trans_unit in ctx.trans_units
-    root_cursor = getcursor(trans_unit)
-    push!(ctx.cursor_stack, root_cursor)
-    header = spelling(root_cursor)
-    @info "+ Wrapping header: $header ..."
-    # loop over all of the child cursors and wrap them, if appropriate.
-    ctx.children = children(root_cursor)
-    for (i, child) in enumerate(ctx.children)
-        child_name = name(child)
-        child_header = filename(child)
-        ctx.children_index = i
-        # choose which cursor to wrap
-        startswith(child_name, "__") && continue  # skip compiler definitions
-        child_name in keys(ctx.common_buffer) && continue  # already wrapped
-        child_header != header && continue  # skip if cursor filename is not in the headers to be wrapped
-        isinlined(child) && continue # skip inlined functions (static inline procedures are not in library ABI)
-        child_name == "sc_array" && continue # struct member types are wrong (CInt -> Csint_t)
-        @info "  | $child_name"
-        wrap!(ctx, child)
+let api_buffer = Array{Expr}(undef,0)
+
+    for trans_unit in ctx.trans_units
+        root_cursor = getcursor(trans_unit)
+        push!(ctx.cursor_stack, root_cursor)
+        header = spelling(root_cursor)
+        @info "+ Wrapping header: $header ..."
+        # loop over all of the child cursors and wrap them, if appropriate.
+        ctx.children = children(root_cursor)
+        for (i, child) in enumerate(ctx.children)
+            child_name = name(child)
+            child_header = filename(child)
+            ctx.children_index = i
+            # choose which cursor to wrap
+            startswith(child_name, "__") && continue  # skip compiler definitions
+            child_name in keys(ctx.common_buffer) && continue  # already wrapped
+            child_name in keys(ctx.api_buffer) && continue  # already wrapped
+            child_header != header && continue  # skip if cursor filename is not in the headers to be wrapped
+            isinlined(child) && continue # skip inlined functions (static inline procedures are not in library ABI)
+            child_name == "sc_array" && continue # struct member types are wrong (CInt -> Csint_t)
+            @info "  | + $child_name"
+            wrap!(ctx, child)
+        end
+        # Remove duplicated Expr already present in a different header
+        @info "- Removing duplicates from: $header ..."
+        for (i,element) in enumerate(ctx.api_buffer)
+            if element in api_buffer
+                name = string(element.args[1])
+                @info "  | - $name"
+                deleteat!(ctx.api_buffer, i)
+            end
+        end
+        api_buffer = vcat(api_buffer,ctx.api_buffer)
+        # Write down context api_buffer
+        @info "Writing $(api_file)"
+        println(api_stream, "# Julia wrapper for header: $(basename(header))")
+        println(api_stream, "# Automatically generated using Clang.jl\n")
+        print_buffer(api_stream, ctx.api_buffer)
+        empty!(ctx.api_buffer)  # clean up api_buffer for the next header
     end
-    @info "Writing $(api_file)"
-    println(api_stream, "# Julia wrapper for header: $(basename(header))")
-    println(api_stream, "# Automatically generated using Clang.jl\n")
-    print_buffer(api_stream, ctx.api_buffer)
-    empty!(ctx.api_buffer)  # clean up api_buffer for the next header
+    empty!(api_buffer)
+    close(api_stream)
 end
-close(api_stream)
 
 # write "common" definitions: types, typealiases, etc.
 common_file = joinpath(@__DIR__, P4EST_COMMON_FILE)

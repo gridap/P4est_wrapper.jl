@@ -149,10 +149,6 @@ end
 # Automatically generated using Clang.jl
 
 
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
-
 function sc_array_memory_used()
     ccall((:sc_array_memory_used, p4est_lib), Cint, ())
 end
@@ -472,17 +468,9 @@ end
 function sc_recycle_array_remove(rec_array, position)
     ccall((:sc_recycle_array_remove, p4est_lib), Ptr{Cvoid}, (Ptr{sc_recycle_array_t}, Csize_t), rec_array, position)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_memory_used()
     ccall((:p4est_memory_used, p4est_lib), Cint, ())
@@ -539,17 +527,9 @@ end
 function p4est_load(filename, mpicomm, data_size, load_data, user_pointer, connectivity)
     ccall((:p4est_load, p4est_lib), Ptr{p4est_t}, (Cstring, MPI_Comm, Csize_t, Cint, Ptr{Cvoid}, Ptr{Ptr{p4est_connectivity_t}}), filename, mpicomm, data_size, load_data, user_pointer, connectivity)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_bits.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_quadrant_print(log_priority, q)
     ccall((:p4est_quadrant_print, p4est_lib), Cvoid, (Cint, Ptr{p4est_quadrant_t}), log_priority, q)
@@ -818,17 +798,9 @@ end
 function p4est_quadrant_set_morton(quadrant, level, id)
     ccall((:p4est_quadrant_set_morton, p4est_lib), Cvoid, (Ptr{p4est_quadrant_t}, Cint, UInt64), quadrant, level, id)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_connectivity.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_connect_type_int(btype)
     ccall((:p4est_connect_type_int, p4est_lib), Cint, (p4est_connect_type_t,), btype)
@@ -993,17 +965,9 @@ end
 function p4est_connectivity_read_inp(filename)
     ccall((:p4est_connectivity_read_inp, p4est_lib), Ptr{p4est_connectivity_t}, (Cstring,), filename)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_extended.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_new_ext(mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
     ccall((:p4est_new_ext, p4est_lib), Ptr{p4est_t}, (MPI_Comm, Ptr{p4est_connectivity_t}, p4est_locidx_t, Cint, Cint, Csize_t, p4est_init_t, Ptr{Cvoid}), mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
@@ -1060,17 +1024,9 @@ end
 function p4est_get_plex_data_ext(p4est, ghost, lnodes, ctype, overlap, first_local_quad, out_points_per_dim, out_cone_sizes, out_cones, out_cone_orientations, out_vertex_coords, out_children, out_parents, out_childids, out_leaves, out_remotes, custom_numbering)
     ccall((:p4est_get_plex_data_ext, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{Ptr{p4est_ghost_t}}, Ptr{Ptr{p4est_lnodes_t}}, p4est_connect_type_t, Cint, Ptr{p4est_locidx_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Cint), p4est, ghost, lnodes, ctype, overlap, first_local_quad, out_points_per_dim, out_cone_sizes, out_cones, out_cone_orientations, out_vertex_coords, out_children, out_parents, out_childids, out_leaves, out_remotes, custom_numbering)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_geometry.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_geometry_destroy(geom)
     ccall((:p4est_geometry_destroy, p4est_lib), Cvoid, (Ptr{p4est_geometry_t},), geom)
@@ -1079,17 +1035,9 @@ end
 function p4est_geometry_new_connectivity(conn)
     ccall((:p4est_geometry_new_connectivity, p4est_lib), Ptr{p4est_geometry_t}, (Ptr{p4est_connectivity_t},), conn)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_ghost.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_ghost_is_valid(p4est, ghost)
     ccall((:p4est_ghost_is_valid, p4est_lib), Cint, (Ptr{p4est_t}, Ptr{p4est_ghost_t}), p4est, ghost)
@@ -1174,32 +1122,16 @@ end
 function p4est_ghost_expand(p4est, ghost)
     ccall((:p4est_ghost_expand, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_ghost_t}), p4est, ghost)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_iterate.h
 # Automatically generated using Clang.jl
 
 
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
-
 function p4est_iterate(p4est, ghost_layer, user_data, iter_volume, iter_face, iter_corner)
     ccall((:p4est_iterate, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_ghost_t}, Ptr{Cvoid}, p4est_iter_volume_t, p4est_iter_face_t, p4est_iter_corner_t), p4est, ghost_layer, user_data, iter_volume, iter_face, iter_corner)
-end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
 end
 # Julia wrapper for header: p4est_mesh.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_mesh_memory_used()
     ccall((:p4est_mesh_memory_used, p4est_lib), Cint, ())
@@ -1232,17 +1164,9 @@ end
 function p4est_mesh_face_neighbor_data(mfn, ghost_data)
     ccall((:p4est_mesh_face_neighbor_data, p4est_lib), Ptr{Cvoid}, (Ptr{p4est_mesh_face_neighbor_t}, Ptr{Cvoid}), mfn, ghost_data)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_search.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_find_lower_bound(array, q, guess)
     ccall((:p4est_find_lower_bound, p4est_lib), ssize_t, (Ptr{sc_array_t}, Ptr{p4est_quadrant_t}, Csize_t), array, q, guess)
@@ -1275,17 +1199,9 @@ end
 function p4est_search_all(p4est, call_post, quadrant_fn, point_fn, points)
     ccall((:p4est_search_all, p4est_lib), Cvoid, (Ptr{p4est_t}, Cint, p4est_search_all_t, p4est_search_all_t, Ptr{sc_array_t}), p4est, call_post, quadrant_fn, point_fn, points)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p4est_vtk.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p4est_vtk_write_file(p4est, geom, filename)
     ccall((:p4est_vtk_write_file, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_geometry_t}, Cstring), p4est, geom, filename)
@@ -1322,17 +1238,9 @@ end
 function p4est_vtk_write_footer(cont)
     ccall((:p4est_vtk_write_footer, p4est_lib), Cint, (Ptr{p4est_vtk_context_t},), cont)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p6est.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p6est_connectivity_new(conn4, top_vertices, height)
     ccall((:p6est_connectivity_new, p4est_lib), Ptr{p6est_connectivity_t}, (Ptr{p4est_connectivity_t}, Ptr{Cdouble}, Ptr{Cdouble}), conn4, top_vertices, height)
@@ -1433,17 +1341,9 @@ end
 function p6est_update_offsets(p6est)
     ccall((:p6est_update_offsets, p4est_lib), Cvoid, (Ptr{p6est_t},), p6est)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p6est_extended.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p6est_new_ext(mpicomm, connectivity, min_quadrants, min_level, min_zlevel, num_zroot, fill_uniform, data_size, init_fn, user_pointer)
     ccall((:p6est_new_ext, p4est_lib), Ptr{p6est_t}, (MPI_Comm, Ptr{p6est_connectivity_t}, p4est_locidx_t, Cint, Cint, Cint, Cint, Csize_t, p6est_init_t, Ptr{Cvoid}), mpicomm, connectivity, min_quadrants, min_level, min_zlevel, num_zroot, fill_uniform, data_size, init_fn, user_pointer)
@@ -1484,17 +1384,9 @@ end
 function p6est_balance_ext(p6est, btype, max_diff, min_diff, init_fn, replace_fn)
     ccall((:p6est_balance_ext, p4est_lib), Cvoid, (Ptr{p6est_t}, p8est_connect_type_t, Cint, Cint, p6est_init_t, p6est_replace_t), p6est, btype, max_diff, min_diff, init_fn, replace_fn)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p6est_ghost.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p6est_ghost_memory_used()
     ccall((:p6est_ghost_memory_used, p4est_lib), Cint, ())
@@ -1531,17 +1423,9 @@ end
 function p6est_ghost_checksum(p6est, ghost)
     ccall((:p6est_ghost_checksum, p4est_lib), UInt32, (Ptr{p6est_t}, Ptr{p6est_ghost_t}), p6est, ghost)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_memory_used()
     ccall((:p8est_memory_used, p4est_lib), Cint, ())
@@ -1598,17 +1482,9 @@ end
 function p8est_load(filename, mpicomm, data_size, load_data, user_pointer, connectivity)
     ccall((:p8est_load, p4est_lib), Ptr{p8est_t}, (Cstring, MPI_Comm, Csize_t, Cint, Ptr{Cvoid}, Ptr{Ptr{p8est_connectivity_t}}), filename, mpicomm, data_size, load_data, user_pointer, connectivity)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_bits.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_quadrant_print(log_priority, q)
     ccall((:p8est_quadrant_print, p4est_lib), Cvoid, (Cint, Ptr{p8est_quadrant_t}), log_priority, q)
@@ -1905,17 +1781,9 @@ end
 function p8est_quadrant_set_morton(quadrant, level, id)
     ccall((:p8est_quadrant_set_morton, p4est_lib), Cvoid, (Ptr{p8est_quadrant_t}, Cint, UInt64), quadrant, level, id)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_connectivity.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_connect_type_int(btype)
     ccall((:p8est_connect_type_int, p4est_lib), Cint, (p8est_connect_type_t,), btype)
@@ -2100,17 +1968,9 @@ end
 function p8est_connectivity_read_inp(filename)
     ccall((:p8est_connectivity_read_inp, p4est_lib), Ptr{p8est_connectivity_t}, (Cstring,), filename)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_extended.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_new_ext(mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
     ccall((:p8est_new_ext, p4est_lib), Ptr{p8est_t}, (MPI_Comm, Ptr{p8est_connectivity_t}, p4est_locidx_t, Cint, Cint, Csize_t, p8est_init_t, Ptr{Cvoid}), mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
@@ -2167,17 +2027,9 @@ end
 function p8est_get_plex_data_ext(p8est, ghost, lnodes, ctype, overlap, first_local_quad, out_points_per_dim, out_cone_sizes, out_cones, out_cone_orientations, out_vertex_coords, out_children, out_parents, out_childids, out_leaves, out_remotes, custom_numbering)
     ccall((:p8est_get_plex_data_ext, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{Ptr{p8est_ghost_t}}, Ptr{Ptr{p8est_lnodes_t}}, p8est_connect_type_t, Cint, Ptr{p4est_locidx_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{sc_array_t}, Cint), p8est, ghost, lnodes, ctype, overlap, first_local_quad, out_points_per_dim, out_cone_sizes, out_cones, out_cone_orientations, out_vertex_coords, out_children, out_parents, out_childids, out_leaves, out_remotes, custom_numbering)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_geometry.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_geometry_destroy(geom)
     ccall((:p8est_geometry_destroy, p4est_lib), Cvoid, (Ptr{p8est_geometry_t},), geom)
@@ -2194,17 +2046,9 @@ end
 function p8est_geometry_new_sphere(conn, R2, R1, R0)
     ccall((:p8est_geometry_new_sphere, p4est_lib), Ptr{p8est_geometry_t}, (Ptr{p8est_connectivity_t}, Cdouble, Cdouble, Cdouble), conn, R2, R1, R0)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_ghost.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_ghost_is_valid(p8est, ghost)
     ccall((:p8est_ghost_is_valid, p4est_lib), Cint, (Ptr{p8est_t}, Ptr{p8est_ghost_t}), p8est, ghost)
@@ -2289,32 +2133,16 @@ end
 function p8est_ghost_expand(p8est, ghost)
     ccall((:p8est_ghost_expand, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_ghost_t}), p8est, ghost)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_iterate.h
 # Automatically generated using Clang.jl
 
 
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
-
 function p8est_iterate(p4est, ghost_layer, user_data, iter_volume, iter_face, iter_edge, iter_corner)
     ccall((:p8est_iterate, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_ghost_t}, Ptr{Cvoid}, p8est_iter_volume_t, p8est_iter_face_t, p8est_iter_edge_t, p8est_iter_corner_t), p4est, ghost_layer, user_data, iter_volume, iter_face, iter_edge, iter_corner)
-end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
 end
 # Julia wrapper for header: p8est_mesh.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_mesh_memory_used()
     ccall((:p8est_mesh_memory_used, p4est_lib), Cint, ())
@@ -2347,17 +2175,9 @@ end
 function p8est_mesh_face_neighbor_data(mfn, ghost_data)
     ccall((:p8est_mesh_face_neighbor_data, p4est_lib), Ptr{Cvoid}, (Ptr{p8est_mesh_face_neighbor_t}, Ptr{Cvoid}), mfn, ghost_data)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_search.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_find_lower_bound(array, q, guess)
     ccall((:p8est_find_lower_bound, p4est_lib), ssize_t, (Ptr{sc_array_t}, Ptr{p8est_quadrant_t}, Csize_t), array, q, guess)
@@ -2390,17 +2210,9 @@ end
 function p8est_search_all(p4est, call_post, quadrant_fn, point_fn, points)
     ccall((:p8est_search_all, p4est_lib), Cvoid, (Ptr{p8est_t}, Cint, p8est_search_all_t, p8est_search_all_t, Ptr{sc_array_t}), p4est, call_post, quadrant_fn, point_fn, points)
 end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
-end
 # Julia wrapper for header: p8est_vtk.h
 # Automatically generated using Clang.jl
 
-
-function sc_extern_c_hack_3()
-    ccall((:sc_extern_c_hack_3, p4est_lib), Cvoid, ())
-end
 
 function p8est_vtk_write_file(p8est, geom, filename)
     ccall((:p8est_vtk_write_file, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_geometry_t}, Cstring), p8est, geom, filename)
@@ -2432,8 +2244,4 @@ end
 
 function p8est_vtk_write_footer(cont)
     ccall((:p8est_vtk_write_footer, p4est_lib), Cint, (Ptr{p8est_vtk_context_t},), cont)
-end
-
-function sc_extern_c_hack_4()
-    ccall((:sc_extern_c_hack_4, p4est_lib), Cvoid, ())
 end

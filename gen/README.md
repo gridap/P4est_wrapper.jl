@@ -4,9 +4,10 @@ Automatically generate p4est wrappers using [Clang](https://github.com/JuliaInte
 
 ## How to use it
 
-User must manually export the relevant include directories. 
-    - P4EST_ROOT_DIR: p4est install root directory
-    - MPI_INCLUDE_DIR: MPI include directory
+User must manually export the relevant include directories as environment variables:
+
+- P4EST_ROOT_DIR: p4est install root directory
+- MPI_INCLUDE_DIR: MPI include directory
 
 Then, environment should be ready to run the `generator.jl` as follows:
 
@@ -14,7 +15,6 @@ Then, environment should be ready to run the `generator.jl` as follows:
 export P4EST_ROOT_DIR=/opt/p4est/2.2/
 export MPI_INCLUDE_DIR=/usr/include/x86_64-linux-gnu/openmpi
 julia --project=. -e '  using Pkg;
-                        Pkg.develop(PackageSpec(path=pwd()));
                         Pkg.instantiate();
                         include("generator.jl");'
 ```
