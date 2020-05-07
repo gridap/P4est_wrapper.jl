@@ -28,3 +28,6 @@ This script generate `p4est_api.jl` and `p4est_common.jl` files.
 - `p4est_api.jl`: Automatically generated p4est API.
 - `p4est_common.jl`: Automatically generated p4est common data.
 - `p4est_fixes.jl`: Some manual fixes to the automatic generated files.
+- `sc_api.jl`: Automatically generated sc API.
+- `sc_common.jl`: Automatically generated sc common data.
+
