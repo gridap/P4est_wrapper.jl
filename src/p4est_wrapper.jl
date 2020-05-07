@@ -31,7 +31,9 @@ export Ctm, Ctime_t, Cclock_t
 const p4est_lib = P4EST_LIB
 
 # Include wrappers from 
-include(joinpath(@__DIR__, "..", "gen", "p4est_fixes.jl"))
+include(joinpath(@__DIR__, "..", "gen", "fixes.jl"))
+include(joinpath(@__DIR__, "..", "gen", "sc_common.jl"))
+include(joinpath(@__DIR__, "..", "gen", "sc_api.jl"))
 include(joinpath(@__DIR__, "..", "gen", "p4est_common.jl"))
 include(joinpath(@__DIR__, "..", "gen", "p4est_api.jl"))
 

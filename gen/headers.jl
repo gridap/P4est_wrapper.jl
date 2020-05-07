@@ -32,8 +32,10 @@ const P8EST_HEADER_FILES = [
     "p8est_search.h", 
     "p8est_vtk.h"]
 
+const PXEST_HEADER_FILES = vcat(P4EST_HEADER_FILES,P6EST_HEADER_FILES,P8EST_HEADER_FILES)
+
 const SC_HEADER_FILES = [
     "sc.h",
     "sc_containers.h"]
 
-const HEADER_FILES = vcat(SC_HEADER_FILES,P4EST_HEADER_FILES,P6EST_HEADER_FILES,P8EST_HEADER_FILES)
+
