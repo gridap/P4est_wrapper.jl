@@ -9,7 +9,7 @@ const MPI_Comm = MPI.Comm
 # Data used for non supported struct/union
 ################################################################
 struct ud
-    user_data::Ref{Ptr{Cvoid}}
+    user_data::Ptr{Cvoid}
 end
 
 ################################################################
@@ -17,8 +17,8 @@ end
 # Wrong element_size and elem_cont datatypes (Cint -> Cssize_t)
 ################################################################
 struct sc_array
-    elem_size::ssize_t
-    elem_count::ssize_t
+    elem_size::Csize_t
+    elem_count::Csize_t
     byte_alloc::ssize_t
     array::Ptr{Cchar}
 end
@@ -33,9 +33,9 @@ const sc_io_source_t = ud
 const p4est_qcoord_t = Cint         # int32_t
 const p4est_locidx_t = Cint         # int32_t
 const p4est_topidx_t = Cint         # int32_t
-const p4est_gloidx_t = Clonglong    # int64_t
+const p4est_gloidx_t = Clong        # int64_t
 const p4est_lnodes_t = ud
-const p4est_quadrant_data = ud
+const p4est_quadrant_data = Int64   # Biggest data size in union
 const p4est_iter_face_side_data = ud
 
 const p6est_quadrant_data = ud
@@ -44,6 +44,11 @@ const p8est_lnodes_t = ud
 const p8est_quadrant_data = ud
 const p8est_iter_edge_side_data = ud
 const p8est_iter_face_side_data = ud
+
+struct piggy3
+    which_tree::p4est_topidx_t
+    local_num::p4est_locidx_t
+end
 
 ################################################################
 # Array index functions
