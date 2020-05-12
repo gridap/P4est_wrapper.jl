@@ -2,10 +2,6 @@ using MPI
 using p4est_wrapper
 using Test
 
-if !MPI.Initialized()
-    MPI.Init()
-end
-
 mpicomm = MPI.COMM_WORLD
 
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
@@ -45,11 +41,4 @@ end
 p4est_ghost_destroy(ptr_to_p4est_ghost)
 p4est_destroy(unitsquare_forest)
 p4est_connectivity_destroy(unitsquare_connectivity)
-
-MPI.Finalize()
-
-
-if (MPI.Initialized() && !isinteractive())
-    MPI.Finalize()
-end
 
