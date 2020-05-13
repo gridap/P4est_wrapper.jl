@@ -659,6 +659,61 @@ end
 function p4est_iterate(p4est, ghost_layer, user_data, iter_volume, iter_face, iter_corner)
     ccall((:p4est_iterate, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_ghost_t}, Ptr{Cvoid}, p4est_iter_volume_t, p4est_iter_face_t, p4est_iter_corner_t), p4est, ghost_layer, user_data, iter_volume, iter_face, iter_corner)
 end
+# Julia wrapper for header: p4est_lnodes.h
+# Automatically generated using Clang.jl
+
+
+function p4est_lnodes_new(p4est, ghost_layer, degree)
+    ccall((:p4est_lnodes_new, p4est_lib), Ptr{p4est_lnodes_t}, (Ptr{p4est_t}, Ptr{p4est_ghost_t}, Cint), p4est, ghost_layer, degree)
+end
+
+function p4est_lnodes_destroy(lnodes)
+    ccall((:p4est_lnodes_destroy, p4est_lib), Cvoid, (Ptr{p4est_lnodes_t},), lnodes)
+end
+
+function p4est_ghost_support_lnodes(p4est, lnodes, ghost)
+    ccall((:p4est_ghost_support_lnodes, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_lnodes_t}, Ptr{p4est_ghost_t}), p4est, lnodes, ghost)
+end
+
+function p4est_ghost_expand_by_lnodes(p4est, lnodes, ghost)
+    ccall((:p4est_ghost_expand_by_lnodes, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_lnodes_t}, Ptr{p4est_ghost_t}), p4est, lnodes, ghost)
+end
+
+function p4est_partition_lnodes(p4est, ghost, degree, partition_for_coarsening)
+    ccall((:p4est_partition_lnodes, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_ghost_t}, Cint, Cint), p4est, ghost, degree, partition_for_coarsening)
+end
+
+function p4est_partition_lnodes_detailed(p4est, ghost, nodes_per_volume, nodes_per_face, nodes_per_corner, partition_for_coarsening)
+    ccall((:p4est_partition_lnodes_detailed, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_ghost_t}, Cint, Cint, Cint, Cint), p4est, ghost, nodes_per_volume, nodes_per_face, nodes_per_corner, partition_for_coarsening)
+end
+
+function p4est_lnodes_share_owned_begin(node_data, lnodes)
+    ccall((:p4est_lnodes_share_owned_begin, p4est_lib), Ptr{p4est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p4est_lnodes_t}), node_data, lnodes)
+end
+
+function p4est_lnodes_share_owned_end(buffer)
+    ccall((:p4est_lnodes_share_owned_end, p4est_lib), Cvoid, (Ptr{p4est_lnodes_buffer_t},), buffer)
+end
+
+function p4est_lnodes_share_owned(node_data, lnodes)
+    ccall((:p4est_lnodes_share_owned, p4est_lib), Cvoid, (Ptr{sc_array_t}, Ptr{p4est_lnodes_t}), node_data, lnodes)
+end
+
+function p4est_lnodes_share_all_begin(node_data, lnodes)
+    ccall((:p4est_lnodes_share_all_begin, p4est_lib), Ptr{p4est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p4est_lnodes_t}), node_data, lnodes)
+end
+
+function p4est_lnodes_share_all_end(buffer)
+    ccall((:p4est_lnodes_share_all_end, p4est_lib), Cvoid, (Ptr{p4est_lnodes_buffer_t},), buffer)
+end
+
+function p4est_lnodes_share_all(node_data, lnodes)
+    ccall((:p4est_lnodes_share_all, p4est_lib), Ptr{p4est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p4est_lnodes_t}), node_data, lnodes)
+end
+
+function p4est_lnodes_buffer_destroy(buffer)
+    ccall((:p4est_lnodes_buffer_destroy, p4est_lib), Cvoid, (Ptr{p4est_lnodes_buffer_t},), buffer)
+end
 # Julia wrapper for header: p4est_mesh.h
 # Automatically generated using Clang.jl
 
@@ -1669,6 +1724,61 @@ end
 
 function p8est_iterate(p4est, ghost_layer, user_data, iter_volume, iter_face, iter_edge, iter_corner)
     ccall((:p8est_iterate, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_ghost_t}, Ptr{Cvoid}, p8est_iter_volume_t, p8est_iter_face_t, p8est_iter_edge_t, p8est_iter_corner_t), p4est, ghost_layer, user_data, iter_volume, iter_face, iter_edge, iter_corner)
+end
+# Julia wrapper for header: p8est_lnodes.h
+# Automatically generated using Clang.jl
+
+
+function p8est_lnodes_new(p8est, ghost_layer, degree)
+    ccall((:p8est_lnodes_new, p4est_lib), Ptr{p8est_lnodes_t}, (Ptr{p8est_t}, Ptr{p8est_ghost_t}, Cint), p8est, ghost_layer, degree)
+end
+
+function p8est_lnodes_destroy(lnodes)
+    ccall((:p8est_lnodes_destroy, p4est_lib), Cvoid, (Ptr{p8est_lnodes_t},), lnodes)
+end
+
+function p8est_partition_lnodes(p8est, ghost, degree, partition_for_coarsening)
+    ccall((:p8est_partition_lnodes, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_ghost_t}, Cint, Cint), p8est, ghost, degree, partition_for_coarsening)
+end
+
+function p8est_partition_lnodes_detailed(p4est, ghost, nodes_per_volume, nodes_per_face, nodes_per_edge, nodes_per_corner, partition_for_coarsening)
+    ccall((:p8est_partition_lnodes_detailed, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_ghost_t}, Cint, Cint, Cint, Cint, Cint), p4est, ghost, nodes_per_volume, nodes_per_face, nodes_per_edge, nodes_per_corner, partition_for_coarsening)
+end
+
+function p8est_ghost_support_lnodes(p8est, lnodes, ghost)
+    ccall((:p8est_ghost_support_lnodes, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_lnodes_t}, Ptr{p8est_ghost_t}), p8est, lnodes, ghost)
+end
+
+function p8est_ghost_expand_by_lnodes(p4est, lnodes, ghost)
+    ccall((:p8est_ghost_expand_by_lnodes, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p8est_lnodes_t}, Ptr{p8est_ghost_t}), p4est, lnodes, ghost)
+end
+
+function p8est_lnodes_share_owned_begin(node_data, lnodes)
+    ccall((:p8est_lnodes_share_owned_begin, p4est_lib), Ptr{p8est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p8est_lnodes_t}), node_data, lnodes)
+end
+
+function p8est_lnodes_share_owned_end(buffer)
+    ccall((:p8est_lnodes_share_owned_end, p4est_lib), Cvoid, (Ptr{p8est_lnodes_buffer_t},), buffer)
+end
+
+function p8est_lnodes_share_owned(node_data, lnodes)
+    ccall((:p8est_lnodes_share_owned, p4est_lib), Cvoid, (Ptr{sc_array_t}, Ptr{p8est_lnodes_t}), node_data, lnodes)
+end
+
+function p8est_lnodes_share_all_begin(node_data, lnodes)
+    ccall((:p8est_lnodes_share_all_begin, p4est_lib), Ptr{p8est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p8est_lnodes_t}), node_data, lnodes)
+end
+
+function p8est_lnodes_share_all_end(buffer)
+    ccall((:p8est_lnodes_share_all_end, p4est_lib), Cvoid, (Ptr{p8est_lnodes_buffer_t},), buffer)
+end
+
+function p8est_lnodes_share_all(node_data, lnodes)
+    ccall((:p8est_lnodes_share_all, p4est_lib), Ptr{p8est_lnodes_buffer_t}, (Ptr{sc_array_t}, Ptr{p8est_lnodes_t}), node_data, lnodes)
+end
+
+function p8est_lnodes_buffer_destroy(buffer)
+    ccall((:p8est_lnodes_buffer_destroy, p4est_lib), Cvoid, (Ptr{p8est_lnodes_buffer_t},), buffer)
 end
 # Julia wrapper for header: p8est_mesh.h
 # Automatically generated using Clang.jl

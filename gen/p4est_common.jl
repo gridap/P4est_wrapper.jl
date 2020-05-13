@@ -228,6 +228,43 @@ end
 
 const p4est_iter_corner_info_t = p4est_iter_corner_info
 const p4est_iter_corner_t = Ptr{Cvoid}
+const p4est_lnodes_code_t = Int8
+
+struct p4est_lnodes
+    mpicomm::MPI_Comm
+    num_local_nodes::p4est_locidx_t
+    owned_count::p4est_locidx_t
+    global_offset::p4est_gloidx_t
+    nonlocal_nodes::Ptr{p4est_gloidx_t}
+    sharers::Ptr{sc_array_t}
+    global_owned_count::Ptr{p4est_locidx_t}
+    degree::Cint
+    vnodes::Cint
+    num_local_elements::p4est_locidx_t
+    face_code::Ptr{p4est_lnodes_code_t}
+    element_nodes::Ptr{p4est_locidx_t}
+end
+
+const p4est_lnodes_t = p4est_lnodes
+
+struct p4est_lnodes_rank
+    rank::Cint
+    shared_nodes::sc_array_t
+    shared_mine_offset::p4est_locidx_t
+    shared_mine_count::p4est_locidx_t
+    owned_offset::p4est_locidx_t
+    owned_count::p4est_locidx_t
+end
+
+const p4est_lnodes_rank_t = p4est_lnodes_rank
+
+struct p4est_lnodes_buffer
+    requests::Ptr{sc_array_t}
+    send_buffers::Ptr{sc_array_t}
+    recv_buffers::Ptr{sc_array_t}
+end
+
+const p4est_lnodes_buffer_t = p4est_lnodes_buffer
 
 struct p4est_mesh_t
     local_num_quadrants::p4est_locidx_t
@@ -605,6 +642,43 @@ end
 
 const p8est_iter_corner_info_t = p8est_iter_corner_info
 const p8est_iter_corner_t = Ptr{Cvoid}
+const p8est_lnodes_code_t = Int16
+
+struct p8est_lnodes
+    mpicomm::MPI_Comm
+    num_local_nodes::p4est_locidx_t
+    owned_count::p4est_locidx_t
+    global_offset::p4est_gloidx_t
+    nonlocal_nodes::Ptr{p4est_gloidx_t}
+    sharers::Ptr{sc_array_t}
+    global_owned_count::Ptr{p4est_locidx_t}
+    degree::Cint
+    vnodes::Cint
+    num_local_elements::p4est_locidx_t
+    face_code::Ptr{p8est_lnodes_code_t}
+    element_nodes::Ptr{p4est_locidx_t}
+end
+
+const p8est_lnodes_t = p8est_lnodes
+
+struct p8est_lnodes_rank
+    rank::Cint
+    shared_nodes::sc_array_t
+    shared_mine_offset::p4est_locidx_t
+    shared_mine_count::p4est_locidx_t
+    owned_offset::p4est_locidx_t
+    owned_count::p4est_locidx_t
+end
+
+const p8est_lnodes_rank_t = p8est_lnodes_rank
+
+struct p8est_lnodes_buffer
+    requests::Ptr{sc_array_t}
+    send_buffers::Ptr{sc_array_t}
+    recv_buffers::Ptr{sc_array_t}
+end
+
+const p8est_lnodes_buffer_t = p8est_lnodes_buffer
 
 struct p8est_mesh_t
     local_num_quadrants::p4est_locidx_t

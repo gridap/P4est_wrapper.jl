@@ -11,6 +11,7 @@ const P4EST_HEADER_FILES = [
     "p4est_geometry.h", 
     "p4est_ghost.h", 
     "p4est_iterate.h",  
+    "p4est_lnodes.h",
     "p4est_mesh.h", 
     "p4est_search.h", 
     "p4est_vtk.h"]
@@ -28,6 +29,7 @@ const P8EST_HEADER_FILES = [
     "p8est_geometry.h", 
     "p8est_ghost.h", 
     "p8est_iterate.h",  
+    "p8est_lnodes.h",
     "p8est_mesh.h", 
     "p8est_search.h", 
     "p8est_vtk.h"]
@@ -36,6 +38,7 @@ const PXEST_HEADER_FILES = vcat(P4EST_HEADER_FILES,P6EST_HEADER_FILES,P8EST_HEAD
 
 const SC_HEADER_FILES = [
     "sc.h",
-    "sc_containers.h"]
+    "sc_containers.h",
+    "sc_io.h"]
 
 

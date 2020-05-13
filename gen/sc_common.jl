@@ -199,3 +199,55 @@ struct sc_recycle_array
 end
 
 const sc_recycle_array_t = sc_recycle_array
+
+@cenum sc_io_error_t::Int32 begin
+    SC_IO_ERROR_NONE = 0
+    SC_IO_ERROR_FATAL = -1
+    SC_IO_ERROR_AGAIN = -2
+end
+
+@cenum sc_io_mode_t::UInt32 begin
+    SC_IO_MODE_WRITE = 0
+    SC_IO_MODE_APPEND = 1
+    SC_IO_MODE_LAST = 2
+end
+
+@cenum sc_io_encode_t::UInt32 begin
+    SC_IO_ENCODE_NONE = 0
+    SC_IO_ENCODE_LAST = 1
+end
+
+@cenum sc_io_type_t::UInt32 begin
+    SC_IO_TYPE_BUFFER = 0
+    SC_IO_TYPE_FILENAME = 1
+    SC_IO_TYPE_FILEFILE = 2
+    SC_IO_TYPE_LAST = 3
+end
+
+
+struct sc_io_sink
+    iotype::sc_io_type_t
+    mode::sc_io_mode_t
+    encode::sc_io_encode_t
+    buffer::Ptr{sc_array_t}
+    buffer_bytes::Csize_t
+    file::Ptr{FILE}
+    bytes_in::Csize_t
+    bytes_out::Csize_t
+end
+
+const sc_io_sink_t = sc_io_sink
+
+struct sc_io_source
+    iotype::sc_io_type_t
+    encode::sc_io_encode_t
+    buffer::Ptr{sc_array_t}
+    buffer_bytes::Csize_t
+    file::Ptr{FILE}
+    bytes_in::Csize_t
+    bytes_out::Csize_t
+    mirror::Ptr{sc_io_sink_t}
+    mirror_buffer::Ptr{sc_array_t}
+end
+
+const sc_io_source_t = sc_io_source

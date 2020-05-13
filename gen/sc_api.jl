@@ -468,3 +468,66 @@ end
 function sc_recycle_array_remove(rec_array, position)
     ccall((:sc_recycle_array_remove, p4est_lib), Ptr{Cvoid}, (Ptr{sc_recycle_array_t}, Csize_t), rec_array, position)
 end
+# Julia wrapper for header: sc_io.h
+# Automatically generated using Clang.jl
+
+
+function sc_io_sink_destroy(sink)
+    ccall((:sc_io_sink_destroy, p4est_lib), Cint, (Ptr{sc_io_sink_t},), sink)
+end
+
+function sc_io_sink_write(sink, data, bytes_avail)
+    ccall((:sc_io_sink_write, p4est_lib), Cint, (Ptr{sc_io_sink_t}, Ptr{Cvoid}, Csize_t), sink, data, bytes_avail)
+end
+
+function sc_io_sink_complete(sink, bytes_in, bytes_out)
+    ccall((:sc_io_sink_complete, p4est_lib), Cint, (Ptr{sc_io_sink_t}, Ptr{Csize_t}, Ptr{Csize_t}), sink, bytes_in, bytes_out)
+end
+
+function sc_io_sink_align(sink, bytes_align)
+    ccall((:sc_io_sink_align, p4est_lib), Cint, (Ptr{sc_io_sink_t}, Csize_t), sink, bytes_align)
+end
+
+function sc_io_source_destroy(source)
+    ccall((:sc_io_source_destroy, p4est_lib), Cint, (Ptr{sc_io_source_t},), source)
+end
+
+function sc_io_source_read(source, data, bytes_avail, bytes_out)
+    ccall((:sc_io_source_read, p4est_lib), Cint, (Ptr{sc_io_source_t}, Ptr{Cvoid}, Csize_t, Ptr{Csize_t}), source, data, bytes_avail, bytes_out)
+end
+
+function sc_io_source_complete(source, bytes_in, bytes_out)
+    ccall((:sc_io_source_complete, p4est_lib), Cint, (Ptr{sc_io_source_t}, Ptr{Csize_t}, Ptr{Csize_t}), source, bytes_in, bytes_out)
+end
+
+function sc_io_source_align(source, bytes_align)
+    ccall((:sc_io_source_align, p4est_lib), Cint, (Ptr{sc_io_source_t}, Csize_t), source, bytes_align)
+end
+
+function sc_io_source_activate_mirror(source)
+    ccall((:sc_io_source_activate_mirror, p4est_lib), Cint, (Ptr{sc_io_source_t},), source)
+end
+
+function sc_io_source_read_mirror(source, data, bytes_avail, bytes_out)
+    ccall((:sc_io_source_read_mirror, p4est_lib), Cint, (Ptr{sc_io_source_t}, Ptr{Cvoid}, Csize_t, Ptr{Csize_t}), source, data, bytes_avail, bytes_out)
+end
+
+function sc_vtk_write_binary(vtkfile, numeric_data, byte_length)
+    ccall((:sc_vtk_write_binary, p4est_lib), Cint, (Ptr{FILE}, Cstring, Csize_t), vtkfile, numeric_data, byte_length)
+end
+
+function sc_vtk_write_compressed(vtkfile, numeric_data, byte_length)
+    ccall((:sc_vtk_write_compressed, p4est_lib), Cint, (Ptr{FILE}, Cstring, Csize_t), vtkfile, numeric_data, byte_length)
+end
+
+function sc_fwrite(ptr, size, nmemb, file, errmsg)
+    ccall((:sc_fwrite, p4est_lib), Cvoid, (Ptr{Cvoid}, Csize_t, Csize_t, Ptr{FILE}, Cstring), ptr, size, nmemb, file, errmsg)
+end
+
+function sc_fread(ptr, size, nmemb, file, errmsg)
+    ccall((:sc_fread, p4est_lib), Cvoid, (Ptr{Cvoid}, Csize_t, Csize_t, Ptr{FILE}, Cstring), ptr, size, nmemb, file, errmsg)
+end
+
+function sc_mpi_write(mpifile, ptr, zcount, t, errmsg)
+    ccall((:sc_mpi_write, p4est_lib), Cvoid, (MPI_File, Ptr{Cvoid}, Csize_t, MPI_Datatype, Cstring), mpifile, ptr, zcount, t, errmsg)
+end
