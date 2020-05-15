@@ -2,6 +2,11 @@ using MPI
 using p4est_wrapper
 using Test
 
+# Initialize MPI if not initialized yet
+if !MPI.Initialized()
+    MPI.Init()
+end
+
 struct piggy3_t which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
 
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
@@ -35,7 +40,7 @@ let mpirank = MPI.Comm_rank(mpicomm)
         for j=proc_offsets[i]:proc_offsets[i+1]-1
             quadrant = ghost_quadrants[j+1]
             piggy3 = reinterpret(piggy3_t, [quadrant.p])[]
-            @show mpirank, piggy3.local_num
+            print("(rank, local_num) ($(mpirank),$(piggy3.local_num)) \n")
         end
     end
 end
@@ -44,3 +49,7 @@ p4est_ghost_destroy(ptr_to_p4est_ghost)
 p4est_destroy(unitsquare_forest)
 p4est_connectivity_destroy(unitsquare_connectivity)
 
+# Finalize MPI if initialized and session is not interactive
+if (MPI.Initialized() && !isinteractive())
+    MPI.Finalize()
+end

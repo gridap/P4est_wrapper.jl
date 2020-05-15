@@ -2,6 +2,11 @@ using MPI
 using p4est_wrapper
 using Test
 
+# Initialize MPI if not initialized yet
+if !MPI.Initialized()
+    MPI.Init()
+end
+
 #############################################################################
 # Definition of data structures and function callbacks
 #############################################################################
@@ -72,3 +77,7 @@ p4est_destroy(unitsquare_forest)
 # Destroy the connectivity
 p4est_connectivity_destroy(unitsquare_connectivity)
 
+# Finalize MPI if initialized and session is not interactive
+if (MPI.Initialized() && !isinteractive())
+    MPI.Finalize()
+end
