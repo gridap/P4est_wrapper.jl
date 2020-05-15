@@ -12,7 +12,7 @@ struct point_t x::Cdouble; y::Cdouble; end
 # Refine callback
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
-    q = unsafe_load(quadrant)
+    q = unsafe_wrap(Array,quadrant,1)[1]
     ((q.level == 0) || (q.level < 5 && p4est_quadrant_child_id(quadrant) == 1)) && return Cint(1)
     return Cint(0)
 end
@@ -22,7 +22,7 @@ const my_refine_c = @cfunction(my_refine, Cint, (Ptr{p4est_t}, p4est_topidx_t, P
 
 # Search callback function
 function search_point_fn(::Ptr{p4est_t}, ::p4est_topidx_t, ::Ptr{p4est_quadrant_t}, local_num::p4est_locidx_t, point::Ptr{Cvoid})
-    @info local_num, unsafe_load(convert(Ptr{point_t}, point))
+    @info local_num, unsafe_wrap(Array,convert(Ptr{point_t}, point),1)[1]
     return Cint(1)
 end
 
@@ -49,7 +49,7 @@ ptr_to_points_sc_array = sc_array_new_count(sizeof(point_t), 2)
 @test ptr_to_points_sc_array != C_NULL
 
 # Check correct number of elements and its size in sc_array
-points_sc_array = unsafe_load(ptr_to_points_sc_array)
+points_sc_array = unsafe_wrap(Array, ptr_to_points_sc_array, 1)[1]
 @test points_sc_array.elem_count == 2 && points_sc_array.elem_size == sizeof(point_t)
 
 # Obtain reference to first point_t 

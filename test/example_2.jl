@@ -6,7 +6,7 @@ struct piggy3_t which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
 
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
-    q = unsafe_load(quadrant)
+    q = unsafe_wrap(Array,quadrant,1)[1]
     ((q.level == 0) || (q.level < 2 && p4est_quadrant_child_id(quadrant) == 1)) && return Cint(1)
     return Cint(0)
 end
@@ -23,7 +23,7 @@ p4est_refine(unitsquare_forest, 1, my_refine_c, C_NULL)
 p4est_partition(unitsquare_forest, 0, C_NULL);
 
 ptr_to_p4est_ghost = p4est_ghost_new(unitsquare_forest,p4est_wrapper.P4EST_CONNECT_FULL)
-p4est_ghost = unsafe_load(ptr_to_p4est_ghost)
+p4est_ghost = unsafe_wrap(Array,ptr_to_p4est_ghost,1)[1]
 
 ##p4est_quadrant_t * ptr_ghost_quadrants = (p4est_quadrant_t *) p4est_ghost->ghosts.array;
 ptr_ghost_quadrants = convert(Ptr{p4est_quadrant_t},p4est_ghost.ghosts.array)
