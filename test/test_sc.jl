@@ -48,6 +48,34 @@ str_ptr = sc_strdup(id, "p4est")
 @test sc_int64_compare([Int64(5)],    [Int64(5)])   == 0
 @test sc_double_compare([Float64(6)], [Float64(6)]) == 0
 
+# SC_ARRAY related API
+sc_array_ptr = sc_array_new(el_size)
+@test sc_array_init(sc_array_ptr, el_size) == nothing
+@test sc_array_memset(sc_array_ptr,0) == nothing
+@test sc_array_reset(sc_array_ptr) == nothing
+@test sc_array_truncate(sc_array_ptr) == nothing
+@test sc_array_rewind(sc_array_ptr,2*el_num) == nothing 
+@test sc_array_resize(sc_array_ptr,2*el_num) == nothing
+@test sc_array_destroy(sc_array_ptr) == nothing
+
+sc_array_ptr = sc_array_new_count(el_size, el_num)
+#@test sc_array_init_size(sc_array_ptr, el_size, el_num) == nothing
+#@test sc_array_init_count(sc_array_ptr, el_size, el_num) == nothing
+#sc_array_data_ptr = sc_array_new_data(sc_array_ptr, el_size, el_num)
+#sc_array_view_ptr = sc_array_new_view(sc_array_ptr, 0, 0)
+#@test sc_array_destroy(sc_array_data_ptr) == nothing
+#@test sc_array_destroy(sc_array_view_ptr) == nothing
+@test sc_array_destroy(sc_array_ptr) == nothing
+
+# SC_MEMPOOL related API
+sc_mempool_ptr = sc_mempool_new(el_size)
+#@test sc_mempool_init(sc_mempool_ptr, el_size) == nothing
+#@test sc_mempool_truncate(sc_mempool_ptr) == nothing
+#@test sc_mempool_reset(sc_mempool_ptr) == nothing
+#@test sc_mempool_destroy(sc_mempool_ptr) == nothing
+#sc_mempool_ptr = sc_mempool_new_zero_and_persist(el_size)
+@test sc_mempool_destroy(sc_mempool_ptr) == nothing
+
 # SC library finalization
 @test sc_package_unregister(id) == nothing
 @test sc_finalize() == nothing

@@ -27,7 +27,7 @@ const my_refine_c = @cfunction(my_refine, Cint, (Ptr{p4est_t}, p4est_topidx_t, P
 
 # Search callback function
 function search_point_fn(::Ptr{p4est_t}, ::p4est_topidx_t, ::Ptr{p4est_quadrant_t}, local_num::p4est_locidx_t, point::Ptr{Cvoid})
-    @info local_num, unsafe_wrap(Array,convert(Ptr{point_t}, point),1)[1]
+    @info local_num, unsafe_wrap(Array, Ptr{point_t}(point), 1)[1]
     return Cint(1)
 end
 
