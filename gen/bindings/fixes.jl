@@ -60,7 +60,7 @@ const p8est_iter_face_side_data = bitdata416
 ################################################################
 
 function sc_array_index(array::Ptr{sc_array_t}, iz::ssize_t)
-    sc_array_object = unsafe_load(array)
+    sc_array_object = unsafe_wrap(Array, array, 1)
     @assert iz < sc_array_object.elem_count
     return sc_array_object.array + sc_array_object.elem_size * iz
 end 
