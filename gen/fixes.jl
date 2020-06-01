@@ -3,7 +3,7 @@
 ################################################################
 const FILE = Cvoid # File descriptor
 const ssize_t = Cssize_t
-const MPI_Comm = MPI.Comm
+const MPI_Comm = MPI.MPI_Comm
 const MPI_File = MPI.MPI_File
 const MPI_Datatype = MPI.MPI_Datatype
 
