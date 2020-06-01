@@ -11,6 +11,11 @@ if p4est_wrapper.P4EST_FOUND
     dir = dirname(@__FILE__)
     julia = Base.julia_cmd()
     mpiexec = MPI.mpiexec_path
+    @testset "Test SC" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_sc.jl"))`
+        @show cmd
+        run(cmd)
+    end
     @testset "Example 1" begin 
         cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "example_1.jl"))`
         @show cmd
