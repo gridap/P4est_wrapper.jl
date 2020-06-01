@@ -40,4 +40,4 @@ before_script:
 notifications:
   email: false
 after_success:
-  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; coverage=process_folder(); append!(coverage, process_folder("gen")); Codecov.submit(coverage)'
+  - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; coverage=process_folder(); append!(coverage, process_folder("gen/bindings")); Codecov.submit(coverage)'

@@ -25,7 +25,9 @@ module wrapper
         ctx.options["is_struct_mutable"] = false
 
         # write output
-        api_file = joinpath(@__DIR__, apifile)
+        api_dir = joinpath(@__DIR__, "bindings")
+        if !isdir(api_dir) mkdir(api_dir) end
+        api_file = joinpath(api_dir, apifile)
         api_stream = open(api_file, "w")
 
         let api_buffer = Array{Expr}(undef,0)

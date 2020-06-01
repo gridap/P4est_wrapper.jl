@@ -31,14 +31,14 @@ export Ctm, Ctime_t, Cclock_t
 const p4est_lib = P4EST_LIB
 
 # Include wrappers from 
-include(joinpath(@__DIR__, "..", "gen", "fixes.jl"))
-include(joinpath(@__DIR__, "..", "gen", "sc_common.jl"))
-include(joinpath(@__DIR__, "..", "gen", "sc_api.jl"))
-include(joinpath(@__DIR__, "..", "gen", "p4est_common.jl"))
-include(joinpath(@__DIR__, "..", "gen", "p4est_api.jl"))
+include(joinpath(@__DIR__, "..", "gen", "bindings", "fixes.jl"))
+include(joinpath(@__DIR__, "..", "gen", "bindings", "sc_common.jl"))
+include(joinpath(@__DIR__, "..", "gen", "bindings", "sc_api.jl"))
+include(joinpath(@__DIR__, "..", "gen", "bindings", "p4est_common.jl"))
+include(joinpath(@__DIR__, "..", "gen", "bindings", "p4est_api.jl"))
 
 ################################################################
-# Export everything
+# Export everything starting with ...
 ################################################################
 foreach(names(@__MODULE__, all=true)) do s
     if startswith(string(s), "sc") || startswith(string(s), "p4est") || startswith(string(s), "p6est") || startswith(string(s), "p8est") 
