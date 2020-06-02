@@ -20,12 +20,25 @@ end
 
 const sc_array_t = sc_array
 ################################################################
-# Non supported data/struct/unions
+# Non-wrapped but required data types
+# p4est_base.h header not included as it depends on p4est_config.h and sc_config.h.
+# This files are automatically generated during configuration. 
 ################################################################
 const p4est_qcoord_t = Cint         # int32_t
 const p4est_locidx_t = Cint         # int32_t
 const p4est_topidx_t = Cint         # int32_t
 const p4est_gloidx_t = Clong        # int64_t
+
+################################################################
+# C-Unions: Non supported 
+#
+# A union is a special data type available in C.
+# C-Unions allows to store different data types in the same memory location. 
+# The memory occupied by a C-Union will be equal to the largest member of the union.
+#
+# From the Julia point of view, we treat C-Unions as fixed size plain memory regions.
+# These memory regions can be later reinterpreted as any of the original members of the C-Union.
+################################################################
 
 #struct piggy1 which_tree::p4est_topidx_t; owner_rank::Cint; end
 #struct piggy2 which_tree::p4est_topidx_t; from_tree::p4est_topidx_t; end
@@ -57,6 +70,7 @@ const p8est_iter_face_side_data = bitdata416
 
 ################################################################
 # Array index functions
+# Static functions are not part of the API/ABI
 ################################################################
 
 function sc_array_index(array::Ptr{sc_array_t}, iz::ssize_t)
