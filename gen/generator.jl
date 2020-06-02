@@ -75,7 +75,7 @@ module wrapper
         end
 
         # write "common" definitions: types, typealiases, etc.
-        common_file = joinpath(@__DIR__, commonfile)
+        common_file = joinpath(api_dir, commonfile)
         @info "Writing $(common_file)"
         open(common_file, "w") do f
             println(f, "# Automatically generated using Clang.jl\n")
@@ -113,19 +113,23 @@ MPI_INCLUDE_DIR = haskey(ENV,"MPI_INCLUDE_DIR") ? ENV["MPI_INCLUDE_DIR"] : "/usr
 ################################################################
 const P4EST_INCLUDE     = joinpath(dirname(P4EST_ROOT_DIR), "include") |> normpath
 const SC_HEADERS        = [joinpath(P4EST_INCLUDE, header) for header in SC_HEADER_FILES if endswith(header, ".h")]
-const P4EST_HEADERS     = [joinpath(P4EST_INCLUDE, header) for header in PXEST_HEADER_FILES if endswith(header, ".h")]
+const P4EST_HEADERS     = [joinpath(P4EST_INCLUDE, header) for header in P4EST_HEADER_FILES if endswith(header, ".h")]
+const P6EST_HEADERS     = [joinpath(P4EST_INCLUDE, header) for header in P6EST_HEADER_FILES if endswith(header, ".h")]
+const P8EST_HEADERS     = [joinpath(P4EST_INCLUDE, header) for header in P8EST_HEADER_FILES if endswith(header, ".h")]
 const MPI_INCLUDES      = [MPI_INCLUDE_DIR]
 
 ################################################################
 # Explicitly ignore some structs/functions during automatic generation
 ################################################################
 const SC_IGNORE         = ["sc_array"]
-const P4EST_IGNORE      = ["sc_extern_c_hack_3()", "sc_extern_c_hack_4()"]
+const PXEST_IGNORE      = ["sc_extern_c_hack_3()", "sc_extern_c_hack_4()"]
 
 ################################################################
 # Generate API and COMMON files
 ################################################################
 includes = vcat(MPI_INCLUDES, P4EST_INCLUDE)
 wrapper.generate(SC_HEADERS, includes, "p4est_lib", "sc_api.jl", "sc_common.jl", SC_IGNORE)
-wrapper.generate(P4EST_HEADERS, includes, "p4est_lib", "p4est_api.jl", "p4est_common.jl", P4EST_IGNORE)
+wrapper.generate(P4EST_HEADERS, includes, "p4est_lib", "p4est_api.jl", "p4est_common.jl", PXEST_IGNORE)
+wrapper.generate(P6EST_HEADERS, includes, "p4est_lib", "p6est_api.jl", "p6est_common.jl", PXEST_IGNORE)
+wrapper.generate(P8EST_HEADERS, includes, "p4est_lib", "p8est_api.jl", "p8est_common.jl", PXEST_IGNORE)
 

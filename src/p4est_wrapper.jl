@@ -39,6 +39,10 @@ include(joinpath(bindings_dir, "sc_common.jl"))
 include(joinpath(bindings_dir, "sc_api.jl"))
 include(joinpath(bindings_dir, "p4est_common.jl"))
 include(joinpath(bindings_dir, "p4est_api.jl"))
+include(joinpath(bindings_dir, "p8est_common.jl"))
+include(joinpath(bindings_dir, "p8est_api.jl"))
+include(joinpath(bindings_dir, "p6est_common.jl"))
+include(joinpath(bindings_dir, "p6est_api.jl"))
 
 ################################################################
 # Export everything starting with ...
