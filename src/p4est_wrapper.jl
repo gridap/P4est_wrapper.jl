@@ -14,6 +14,9 @@ if(!P4EST_FOUND)
     error("p4est_wrapper was not build properly. Please run Pkg.build(\"p4est.jl\").")
 end
 
+# Use library path from build process
+const p4est_lib = P4EST_LIB
+
 ################################################################
 # Use dependencies 
 ################################################################
@@ -27,15 +30,15 @@ using CEnum
 include("ctypes.jl")
 export Ctm, Ctime_t, Cclock_t
 
-# Use library path from build process
-const p4est_lib = P4EST_LIB
-
-# Include wrappers from 
-include(joinpath(@__DIR__, "..", "gen", "bindings", "fixes.jl"))
-include(joinpath(@__DIR__, "..", "gen", "bindings", "sc_common.jl"))
-include(joinpath(@__DIR__, "..", "gen", "bindings", "sc_api.jl"))
-include(joinpath(@__DIR__, "..", "gen", "bindings", "p4est_common.jl"))
-include(joinpath(@__DIR__, "..", "gen", "bindings", "p4est_api.jl"))
+# Include P4EST bindings from 
+bindings_dir = joinpath(@__DIR__, "..", "gen", "bindings")
+# The following bindings are automatically generated.
+# Read more info in gen/README.md
+include(joinpath(bindings_dir, "fixes.jl"))
+include(joinpath(bindings_dir, "sc_common.jl"))
+include(joinpath(bindings_dir, "sc_api.jl"))
+include(joinpath(bindings_dir, "p4est_common.jl"))
+include(joinpath(bindings_dir, "p4est_api.jl"))
 
 ################################################################
 # Export everything starting with ...
