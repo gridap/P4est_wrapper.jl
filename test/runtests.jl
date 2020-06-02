@@ -16,6 +16,11 @@ if p4est_wrapper.P4EST_FOUND
         @show cmd
         run(cmd)
     end
+    @testset "Test P4EST" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_p4est.jl"))`
+        @show cmd
+        run(cmd)
+    end
     @testset "Example 1" begin 
         cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "example_1.jl"))`
         @show cmd
