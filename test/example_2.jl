@@ -57,10 +57,10 @@ let mpirank = MPI.Comm_rank(MPI.COMM_WORLD)
     for i=1:p4est_ghost.mpisize
         for j=proc_offsets[i]:proc_offsets[i+1]-1
             quadrant = ghost_quadrants[j+1]
-            piggy3 = reinterpret(piggy3_t, [quadrant.p])[]
+            piggy3 = quadrant.p.piggy3
             @test Bool(p4est_quadrant_is_valid(ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j)))
             p4est_quadrant_print(p4est_wrapper.SC_LP_INFO, ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j))
-            print("(rank, local_num) ($(mpirank),$(piggy3.local_num)) \n")
+            print("(rank, local_num, which_tree) ($(mpirank),$(piggy3.local_num),$(piggy3.which_tree)) \n")
         end
     end
 end
