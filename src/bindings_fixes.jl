@@ -19,6 +19,18 @@ struct sc_array
 end
 
 const sc_array_t = sc_array
+
+################################################################
+# Array index functions
+# Static functions are not part of the API/ABI
+################################################################
+
+function sc_array_index(array::Ptr{sc_array_t}, iz::ssize_t)
+    sc_array_object = unsafe_wrap(Array, array, 1)[1]
+    @assert iz < sc_array_object.elem_count
+    return sc_array_object.array + sc_array_object.elem_size * iz
+end 
+
 ################################################################
 # Non-wrapped but required data types
 # p4est_base.h header not included as it depends on p4est_config.h and sc_config.h.
@@ -40,42 +52,110 @@ const p4est_gloidx_t = Clong        # int64_t
 # These memory regions can be later reinterpreted as any of the original members of the C-Union.
 ################################################################
 
-#struct piggy1 which_tree::p4est_topidx_t; owner_rank::Cint; end
-#struct piggy2 which_tree::p4est_topidx_t; from_tree::p4est_topidx_t; end
-#struct piggy3 which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
-# Union{Ptr{Cvoid}, Clong, Cint, p4est_topidx_t, piggy1, piggy2, piggy3}}
-primitive type bitdata64 64 end # Biggest data size in union (8 bytes - 64 bits)
-const p4est_quadrant_data = bitdata64
-const p6est_quadrant_data = bitdata64
-const p8est_quadrant_data = bitdata64
+function _pointer_to_c_memory(obj::S) where {S}
+    Base.unsafe_convert(Ptr{Cvoid}, [obj])
+end
 
-#struct full is_ghost::Int8; quad::Ptr{Cvoid}; quadid::p4est_locidx_t; end
-#struct hanging is_ghost::NTuple{2,Int8}; quad::NTuple{2,Ptr{Cvoid}}; quadid::NTuple{2,p4est_locidx_t}; end
-# Union{Int8, Ptr{Cvoid}, p4est_locidx_t, hanging}
-primitive type bitdata208 208 end # Biggest data size in union (26 bytes - 208 bits)
-const p4est_iter_face_side_data = bitdata208
+function _pointer_to_julia_memory(obj::S) where {S}
+    Base.unsafe_convert(Ptr{Cvoid}, Ref{S}(obj))
+end
 
-#struct full is_ghost::Int8; quad::Ptr{Cvoid}; quadid::p4est_locidx_t; end
-#struct hanging is_ghost::NTuple{2,Int8}; quad::NTuple{2,Ptr{Cvoid}}; quadid::NTuple{2,p4est_locidx_t}; end
-# Union{full, hanging}
-const p8est_iter_edge_side_data = bitdata208
+function _unsafe_reinterpret(::Type{T}, obj::S) where {T,S}
+# Use unsafe_wrap to avoid copy from unsafe_load 
+# unsafe_load(Ptr{T}(Base.unsafe_convert(Ptr{Cvoid}, Ref{S}(obj))))
+    unsafe_wrap(Array, Ptr{T}(_pointer_to_c_memory(obj)), 1)[]
+end
 
+    ############################################
+    # Primitive type: quadrant_data 
+    # represents the following p4est C-Unions:
+    #   - p4est_quadrant_data
+    #   - p6est_quadrant_data
+    #   - p8est_quadrant_data
+    ############################################
+struct piggy1 which_tree::p4est_topidx_t; owner_rank::Cint; end
+struct piggy2 which_tree::p4est_topidx_t; from_tree::p4est_topidx_t; end
+struct piggy3 which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
 
-#struct full is_ghost::Int8; quad::Ptr{Cvoid}; quadid::p4est_locidx_t; end
-#struct hanging is_ghost::NTuple{4,Int8}; quad::NTuple{4,Ptr{Cvoid}}; quadid::NTuple{4,p4est_locidx_t}; end
-# Union{full, hanging}
-primitive type bitdata416 416 end # Biggest data size in union (52 bytes - 4016 bits)
-const p8est_iter_face_side_data = bitdata416
+quadrant_data_union = Union{Ptr{Cvoid}, Clong, Cint, p4est_topidx_t, piggy1, piggy2, piggy3}
+quadrant_data_properties = (:user_data, :user_long, :user_int, :which_tree, :piggy1, :piggy2, :piggy3)
+primitive type quadrant_data 8*sizeof(quadrant_data_union) end # Biggest data size in union (8 bytes - 64 bits)
 
+function Base.getproperty(x::quadrant_data, name::Symbol)
+    if name == :user_data
+        _unsafe_reinterpret(Ptr{Cvoid}, x)
+    elseif name == :user_long
+        _unsafe_reinterpret(Clong, x)
+    elseif name == :user_int || name == :which_tree
+        _unsafe_reinterpret(Cint, x)
+    elseif name == :piggy1
+        _unsafe_reinterpret(piggy1, x)
+    elseif name == :piggy2
+        _unsafe_reinterpret(piggy2, x)
+    elseif name == :piggy3
+        _unsafe_reinterpret(piggy3, x)
+    else
+        getfield(x, name)
+    end
+end
 
-################################################################
-# Array index functions
-# Static functions are not part of the API/ABI
-################################################################
+Base.propertynames(x::quadrant_data) = (quadrant_data_properties..., fieldnames(DataType)...)
 
-function sc_array_index(array::Ptr{sc_array_t}, iz::ssize_t)
-    sc_array_object = unsafe_wrap(Array, array, 1)[1]
-    @assert iz < sc_array_object.elem_count
-    return sc_array_object.array + sc_array_object.elem_size * iz
-end 
+const p4est_quadrant_data = quadrant_data
+const p6est_quadrant_data = quadrant_data
+const p8est_quadrant_data = quadrant_data
+
+    ############################################
+    # Primitive type: iter_side_data_2 
+    # represents the following p4est C-Unions:
+    #   - p4est_iter_face_side_data
+    #   - p8est_iter_edge_side_data
+    ############################################
+
+struct full is_ghost::Int8; quad::Ptr{Cvoid}; quadid::p4est_locidx_t; end
+struct hanging{S} is_ghost::NTuple{S,Int8}; quad::Ptr{Cvoid}; quadid::NTuple{S,p4est_locidx_t}; end
+iter_side_data_properties = (:full, :hanging)
+
+# Biggest data size in union (24 bytes - 192 bits)
+iter_side_data_2_union = Union{full, hanging{2}}
+primitive type iter_side_data_2 8*sizeof(iter_side_data_2_union) end
+
+function Base.getproperty(x::iter_side_data_2, name::Symbol)
+    if name == :full
+        _unsafe_reinterpret(full, x)
+    elseif name == :user_long
+        _unsafe_reinterpret(hanging{2}, x)
+    else
+        getfield(x, name)
+    end
+end
+
+Base.propertynames(x::iter_side_data_2) = (iter_side_data_properties..., fieldnames(DataType)...)
+
+const p4est_iter_face_side_data = iter_side_data_2
+const p8est_iter_edge_side_data = iter_side_data_2
+
+    ############################################
+    # Primitive type: iter_side_data_4 
+    # represents the following p4est C-Unions:
+    #   - p8est_iter_face_side_data
+    ############################################
+
+# Biggest data size in union (32 bytes - 256 bits) 
+iter_side_data_4_union = Union{full, hanging{4}}
+primitive type iter_side_data_4 8*sizeof(iter_side_data_4_union) end 
+
+function Base.getproperty(x::iter_side_data_4_union, name::Symbol)
+    if name == :full
+        _unsafe_reinterpret(full, x)
+    elseif name == :user_long
+        _unsafe_reinterpret(hanging{4}, x)
+    else
+        getfield(x, name)
+    end
+end
+
+Base.propertynames(x::iter_side_data_4) = (iter_side_data_properties..., fieldnames(DataType)...)
+
+const p8est_iter_face_side_data = iter_side_data_4_union
 
