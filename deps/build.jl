@@ -1,7 +1,8 @@
 using Libdl
+using P4est_jll
 
 P4EST_FOUND        = true
-P4EST_ROOT_DIR     = haskey(ENV,"P4EST_ROOT_DIR") ? ENV["P4EST_ROOT_DIR"] : "/usr"
+P4EST_ROOT_DIR     = haskey(ENV,"P4EST_ROOT_DIR") ? ENV["P4EST_ROOT_DIR"] : P4est_jll.artifact_dir
 P4EST_DIR          = haskey(ENV,"P4EST_DIR") ? ENV["P4EST_DIR"] : P4EST_ROOT_DIR
 P4EST_LIB_DIR      = haskey(ENV,"P4EST_LIB_DIR") ? ENV["P4EST_LIB_DIR"] : joinpath(P4EST_DIR,"lib")
 P4EST_INCLUDE_DIR  = haskey(ENV,"P4EST_INCLUDE_DIR") ? ENV["P4EST_INCLUDE_DIR"] : joinpath(P4EST_DIR,"include")
