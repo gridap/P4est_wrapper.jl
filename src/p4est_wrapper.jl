@@ -30,11 +30,12 @@ using CEnum
 include("ctypes.jl")
 export Ctm, Ctime_t, Cclock_t
 
-# Include P4EST bindings from 
-bindings_dir = joinpath(@__DIR__, "..", "gen", "bindings")
+# Include P4EST bindings
+# The following file fix the automated generation performed by Clang.jl
+include(joinpath(@__DIR__, "bindings_fixes.jl"))
 # The following bindings are automatically generated.
 # Read more info in gen/README.md
-include(joinpath(bindings_dir, "fixes.jl"))
+bindings_dir = joinpath(@__DIR__, "bindings")
 include(joinpath(bindings_dir, "sc_common.jl"))
 include(joinpath(bindings_dir, "sc_api.jl"))
 include(joinpath(bindings_dir, "p4est_common.jl"))

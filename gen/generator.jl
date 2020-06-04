@@ -25,7 +25,7 @@ module wrapper
         ctx.options["is_struct_mutable"] = false
 
         # write output
-        api_dir = joinpath(@__DIR__, "bindings")
+        api_dir = joinpath(@__DIR__, "..", "src", "bindings")
         if !isdir(api_dir) mkdir(api_dir) end
         api_file = joinpath(api_dir, apifile)
         api_stream = open(api_file, "w")

@@ -19,7 +19,7 @@ julia --project=. -e '  using Pkg;
                         include("generator.jl");'
 ```
 
-This script generate the following files inside `bindings` directory:
+This script generate the following files inside `src/bindings` starting at the project root directory:
 
 - `sc_api.jl`
 - `sc_common.jl`
@@ -30,16 +30,19 @@ This script generate the following files inside `bindings` directory:
 - `p8est_api.jl`
 - `p8est_common.jl`
 
-in addition file `fixes.jl` was manually added to fix some issues on the automatically generated sources.
+in addition file `bindings_fixes.jl` was manually added inside `src` directory to fix some issues on the automatically generated sources.
 
 ## Julia files in 'gen' directory
 
 - `generator.jl`: Script to generate `p4est_api.jl` and `p4est_common.jl` files.
 - `headers.jl`: List of p4est header files to be wrapped.
 
-## Julia files in 'gen/bindings' directory
+## Julia files in 'src' directory
 
-- `fixes.jl`: Some commented manual fixes.
+- `bindings_fixes.jl`: Some commented manual fixes to the automatically generated bindings.
+
+## Julia files in 'src/bindings' directory
+
 - `sc_api.jl`: Automatically generated sc API.
 - `sc_common.jl`: Automatically generated sc common data.
 - `p4est_api.jl`: Automatically generated p4est API.
