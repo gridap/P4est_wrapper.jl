@@ -58,7 +58,7 @@ points_sc_array = unsafe_wrap(Array, ptr_to_points_sc_array, 1)[1]
 @test points_sc_array.elem_count == 2 && points_sc_array.elem_size == sizeof(point_t)
 
 # Obtain reference to first point_t 
-ptr_to_points_array = convert(Ptr{point_t}, sc_array_index(ptr_to_points_sc_array,0))
+ptr_to_points_array = Ptr{point_t}(sc_array_index(ptr_to_points_sc_array,0))
 @test ptr_to_points_array != C_NULL
 
 # Overwrite point_t values in sc_array
