@@ -36,6 +36,7 @@ before_script:
   - make --quiet install
   - rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
   - export P4EST_ROOT_DIR=$P4EST_INSTALL
+  - export JULIA_MPI_BINARY="system"
   - cd $CURR_DIR
 notifications:
   email: false
