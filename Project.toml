@@ -10,9 +10,9 @@ MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
 P4est_jll = "6b5a15aa-cf52-5330-8376-5e5d90283449"
 
 [compat]
-MPI = "0.13.1"
-julia = "1.0"
+MPI = "0.13.1, 0.14.0"
 P4est_jll = "2.2.0"
+julia = "1.0"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
