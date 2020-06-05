@@ -37,6 +37,8 @@ before_script:
   - rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
   - export P4EST_ROOT_DIR=$P4EST_INSTALL
   - cd $CURR_DIR
+  - # Configure julia MPI package to use system OpenMPI
+  - julia --project=. -e 'ENV["JULIA_MPI_BINARY"]="system"; using Pkg; Pkg.build("MPI")'
 notifications:
   email: false
 after_success:
