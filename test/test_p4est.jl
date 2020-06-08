@@ -41,6 +41,7 @@ for test_conn in [p4est_connectivity_new_periodic(),
     @test p4est_connectivity_is_valid(test_conn) == 1
     @test p4est_connectivity_destroy(test_conn) == nothing
     @test p4est_connectivity_is_equivalent(unitsquare_connectivity, test_conn) == 0
+    @test p4est_connectivity_destroy(test_conn) == nothing
 end
 
 # Create a new forest
