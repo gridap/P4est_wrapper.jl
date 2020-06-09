@@ -31,8 +31,11 @@ include("ctypes.jl")
 export Ctm, Ctime_t, Cclock_t
 
 # Include P4EST bindings
-# The following file fix the automated generation performed by Clang.jl
-include(joinpath(@__DIR__, "bindings_fixes.jl"))
+
+# The following file fix and/or complete 
+# the automated generation of types and data structures
+include(joinpath(@__DIR__, "common_fixes.jl"))
+
 # The following bindings are automatically generated.
 # Read more info in gen/README.md
 bindings_dir = joinpath(@__DIR__, "bindings")
@@ -44,6 +47,10 @@ include(joinpath(bindings_dir, "p8est_common.jl"))
 include(joinpath(bindings_dir, "p8est_api.jl"))
 include(joinpath(bindings_dir, "p6est_common.jl"))
 include(joinpath(bindings_dir, "p6est_api.jl"))
+
+# The following file fix and/or complete
+# the automated generation of functions
+include(joinpath(@__DIR__, "api_fixes.jl"))
 
 ################################################################
 # Export everything starting with ...
