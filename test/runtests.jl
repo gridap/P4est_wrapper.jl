@@ -36,4 +36,9 @@ if p4est_wrapper.P4EST_FOUND
         @show cmd
         run(cmd)
     end
+    @testset "Example 3" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "example_3.jl"))`
+        @show cmd
+        run(cmd)
+    end
 end
