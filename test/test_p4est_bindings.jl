@@ -39,7 +39,6 @@ for test_conn in [p4est_connectivity_new_periodic(),
                 p4est_connectivity_new_brick(3, 18, 0, 1)]
     @test test_conn != C_NULL
     @test p4est_connectivity_is_valid(test_conn) == 1
-    @test p4est_connectivity_destroy(test_conn) == nothing
     @test p4est_connectivity_is_equivalent(unitsquare_connectivity, test_conn) == 0
     @test p4est_connectivity_destroy(test_conn) == nothing
 end

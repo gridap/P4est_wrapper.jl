@@ -38,7 +38,6 @@ for test_conn in [p8est_connectivity_new_periodic(),
                 p8est_connectivity_new_brick(3, 2, 8, 1, 0, 1)]
     @test test_conn != C_NULL
     @test p8est_connectivity_is_valid(test_conn) == 1
-    @test p8est_connectivity_destroy(test_conn) == nothing
     @test p8est_connectivity_is_equivalent(unitcube_connectivity, test_conn) == 0
     @test p8est_connectivity_destroy(test_conn) == nothing
 end
