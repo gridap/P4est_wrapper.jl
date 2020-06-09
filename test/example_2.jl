@@ -11,9 +11,6 @@ end
 # Definition of data structures and function callbacks
 #############################################################################
 
-# piggy3_t struct
-struct piggy3_t which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
-
 # Refine callback
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
