@@ -11,18 +11,18 @@ if p4est_wrapper.P4EST_FOUND
     dir = dirname(@__FILE__)
     julia = Base.julia_cmd()
     mpiexec = MPI.mpiexec_path
-    @testset "Test SC" begin 
-        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_sc.jl"))`
+    @testset "Test SC bindings" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_sc_bindings.jl"))`
         @show cmd
         run(cmd)
     end
-    @testset "Test P4EST" begin 
-        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_p4est.jl"))`
+    @testset "Test P4EST bindings" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_p4est_bindings.jl"))`
         @show cmd
         run(cmd)
     end
-    @testset "Test P8EST" begin 
-        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_p8est.jl"))`
+    @testset "Test P8EST bindings" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "test_p8est_bindings.jl"))`
         @show cmd
         run(cmd)
     end
@@ -33,6 +33,11 @@ if p4est_wrapper.P4EST_FOUND
     end
     @testset "Example 2" begin 
         cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "example_2.jl"))`
+        @show cmd
+        run(cmd)
+    end
+    @testset "Example 3" begin 
+        cmd = `$mpiexec -n $nprocs --allow-run-as-root --tag-output $(julia) $(joinpath(dir, "example_3.jl"))`
         @show cmd
         run(cmd)
     end

@@ -8,6 +8,16 @@ const MPI_File = MPI.MPI_File
 const MPI_Datatype = MPI.MPI_Datatype
 
 ################################################################
+# Non-wrapped but required data types
+# p4est_base.h header not included as it depends on p4est_config.h and sc_config.h.
+# This files are automatically generated during configuration. 
+################################################################
+const p4est_qcoord_t = Cint         # int32_t
+const p4est_locidx_t = Cint         # int32_t
+const p4est_topidx_t = Cint         # int32_t
+const p4est_gloidx_t = Clong        # int64_t
+
+################################################################
 # fix sc_array struct. 
 # Wrong element_size and elem_cont datatypes (Cint -> Cssize_t)
 ################################################################
@@ -19,27 +29,6 @@ struct sc_array
 end
 
 const sc_array_t = sc_array
-
-################################################################
-# Array index functions
-# Static functions are not part of the API/ABI
-################################################################
-
-function sc_array_index(array::Ptr{sc_array_t}, iz::ssize_t)
-    sc_array_object = unsafe_wrap(Array, array, 1)[1]
-    @assert iz < sc_array_object.elem_count
-    return sc_array_object.array + sc_array_object.elem_size * iz
-end 
-
-################################################################
-# Non-wrapped but required data types
-# p4est_base.h header not included as it depends on p4est_config.h and sc_config.h.
-# This files are automatically generated during configuration. 
-################################################################
-const p4est_qcoord_t = Cint         # int32_t
-const p4est_locidx_t = Cint         # int32_t
-const p4est_topidx_t = Cint         # int32_t
-const p4est_gloidx_t = Clong        # int64_t
 
 ################################################################
 # C-Unions: Non supported 
@@ -54,10 +43,6 @@ const p4est_gloidx_t = Clong        # int64_t
 
 function _pointer_to_c_memory(obj::S) where {S}
     Base.unsafe_convert(Ptr{Cvoid}, [obj])
-end
-
-function _pointer_to_julia_memory(obj::S) where {S}
-    Base.unsafe_convert(Ptr{Cvoid}, Ref{S}(obj))
 end
 
 function _unsafe_reinterpret(::Type{T}, obj::S) where {T,S}
