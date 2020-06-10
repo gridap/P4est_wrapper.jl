@@ -32,9 +32,9 @@ function init_fn_callback_2d(forest_ptr::Ptr{p4est_t},
                             quadrant_ptr::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
     # Extract a reference to the first (and uniquely allowed) tree
-    forest = unsafe_wrap(Array, forest_ptr, 1)[1]
-    tree = unsafe_wrap(Array, p4est_tree_array_index(forest.trees, 0), 1)[1]
-    quadrant = unsafe_wrap(Array, quadrant_ptr, 1)[1]
+    forest = forest_ptr[]
+    tree = p4est_tree_array_index(forest.trees, 0)[]
+    quadrant = quadrant_ptr[]
     q = p4est_quadrant_array_index(tree.quadrants, current_quadrant_index)
     @assert p4est_quadrant_compare(q,quadrant_ptr) == 0
     user_data  = unsafe_wrap(Array, Ptr{Cint}(forest.user_pointer), current_quadrant_index+1)[current_quadrant_index+1]
@@ -49,8 +49,8 @@ function refine_callback_2d(::Ptr{p4est_t},
                             which_tree::p4est_topidx_t, 
                             quadrant_ptr::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
-    quadrant = unsafe_wrap(Array, quadrant_ptr, 1)[1]
-    return Cint(unsafe_wrap(Array, Ptr{Cint}(quadrant.p.user_data),1)[1] == refine_flag)
+    quadrant = quadrant_ptr[]
+    return Cint(unsafe_wrap(Array, Ptr{Cint}(quadrant.p.user_data),1)[] == refine_flag)
 end
 
 const refine_callback_2d_c = @cfunction(refine_callback_2d, Cint, (Ptr{p4est_t}, p4est_topidx_t, Ptr{p4est_quadrant_t}))
@@ -69,7 +69,7 @@ function refine_replace_callback_2d(forest_ptr::Ptr{p4est_t},
     @assert num_incoming == p4est_wrapper.P4EST_CHILDREN
     incoming = unsafe_wrap(Array, incoming_ptr, p4est_wrapper.P4EST_CHILDREN)
     for quadrant_index = 1:p4est_wrapper.P4EST_CHILDREN
-        quadrant = unsafe_wrap(Array, incoming[quadrant_index], 1)[1]
+        quadrant = incoming[quadrant_index][]
         if (num_calls % 2 == 0)
             unsafe_store!(Ptr{Cint}(quadrant.p.user_data), nothing_flag, 1)
         else
@@ -89,8 +89,8 @@ function coarsen_callback_2d(forest_ptr::Ptr{p4est_t},
     coarsen = Cint(1)
     quadrants = unsafe_wrap(Array, quadrants_ptr, p4est_wrapper.P4EST_CHILDREN)
     for quadrant_index = 1:p4est_wrapper.P4EST_CHILDREN
-        quadrant = unsafe_wrap(Array, quadrants[quadrant_index], 1)[1]
-        coarsen = Cint(unsafe_wrap(Array, Ptr{Cint}(quadrant.p.user_data), 1)[1] ==  coarsen_flag)
+        quadrant = quadrants[quadrant_index][]
+        coarsen = Cint(unsafe_wrap(Array, Ptr{Cint}(quadrant.p.user_data), 1)[] ==  coarsen_flag)
         if (!Bool(coarsen)) return coarsen end
     end
     return coarsen
@@ -101,8 +101,8 @@ const coarsen_callback_2d_c = @cfunction(coarsen_callback_2d, Cint, (Ptr{p4est_t
 ## Refine those cells with even identifier    (0,2,4,6,8,...)
 ## Leave untouched cells with odd identifier  (1,3,5,7,9,...)
 function allocate_and_set_refinement_and_coarsening_flags(forest_ptr::Ptr{p4est_t})
-    forest = unsafe_wrap(Array, forest_ptr, 1)[1]
-    tree = unsafe_wrap(Array, p4est_tree_array_index(forest.trees, 0), 1)[1]
+    forest = forest_ptr[]
+    tree = p4est_tree_array_index(forest.trees, 0)[]
     refinement_and_coarsening_flags = Ptr{Cint}(Libc.malloc(sizeof(Cint)*tree.quadrants.elem_count))
     for i = 1:tree.quadrants.elem_count
         if (i%2 == 0)

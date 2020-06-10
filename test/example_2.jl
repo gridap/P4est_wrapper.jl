@@ -14,7 +14,7 @@ end
 # Refine callback
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
-    q = unsafe_wrap(Array,quadrant,1)[1]
+    q = quadrant[]
     ((q.level == 0) || (q.level < 2 && p4est_quadrant_child_id(quadrant) == 1)) && return Cint(1)
     return Cint(0)
 end
@@ -42,18 +42,17 @@ p4est_partition(unitsquare_forest, 0, C_NULL);
 
 # Build the ghost layer. 
 ptr_to_p4est_ghost = p4est_ghost_new(unitsquare_forest, p4est_wrapper.P4EST_CONNECT_FULL)
-p4est_ghost = unsafe_wrap(Array,ptr_to_p4est_ghost,1)[1]
+p4est_ghost = ptr_to_p4est_ghost[]
 
 # Obtain ghost quadrants
 ##p4est_quadrant_t * ptr_ghost_quadrants = (p4est_quadrant_t *) p4est_ghost->ghosts.array;
 ptr_ghost_quadrants = Ptr{p4est_quadrant_t}(p4est_ghost.ghosts.array)
 proc_offsets = unsafe_wrap(Array, p4est_ghost.proc_offsets, p4est_ghost.mpisize+1)
-ghost_quadrants = unsafe_wrap(Array, ptr_ghost_quadrants, p4est_ghost.ghosts.elem_count)
 
 let mpirank = MPI.Comm_rank(MPI.COMM_WORLD)
     for i=1:p4est_ghost.mpisize
         for j=proc_offsets[i]:proc_offsets[i+1]-1
-            quadrant = ghost_quadrants[j+1]
+            quadrant = ptr_ghost_quadrants[j+1]
             piggy3 = quadrant.p.piggy3
             @test Bool(p4est_quadrant_is_valid(ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j)))
             p4est_quadrant_print(p4est_wrapper.SC_LP_INFO, ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j))
