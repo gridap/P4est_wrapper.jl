@@ -30,7 +30,7 @@ This script generate the following files inside `src/bindings` starting at the p
 - `p8est_api.jl`
 - `p8est_common.jl`
 
-in addition file `bindings_fixes.jl` was manually added inside `src` directory to fix some issues on the automatically generated sources.
+in addition files `[api|common]_fixes.jl` were manually added inside `src` directory to fix some issues on the automatically generated sources.
 
 ## Julia files in 'gen' directory
 
@@ -39,7 +39,8 @@ in addition file `bindings_fixes.jl` was manually added inside `src` directory t
 
 ## Julia files in 'src' directory
 
-- `bindings_fixes.jl`: Some commented manual fixes to the automatically generated bindings.
+- `api_fixes.jl`: Some commented manual API fixes to the automatically generated bindings.
+- `common_fixes.jl`: Some commented manual common data fixes to the automatically generated bindings.
 
 ## Julia files in 'src/bindings' directory
 
