@@ -103,26 +103,16 @@ const coarsen_callback_2d_c = @cfunction(coarsen_callback_2d, Cint, (Ptr{p4est_t
 function allocate_and_set_refinement_and_coarsening_flags(forest_ptr::Ptr{p4est_t})
     forest = forest_ptr[]
     tree = p4est_tree_array_index(forest.trees, 0)[]
-    refinement_and_coarsening_flags = Ptr{Cint}(Libc.malloc(sizeof(Cint)*tree.quadrants.elem_count))
-    for i = 1:tree.quadrants.elem_count
-        if (i%2 == 0)
-            unsafe_store!(refinement_and_coarsening_flags, nothing_flag, i)
-        else
-            unsafe_store!(refinement_and_coarsening_flags, refine_flag, i)
-        end
-    end
-    return refinement_and_coarsening_flags
+    return [i%2 == 0 ? nothing_flag : refine_flag for i = 1:tree.quadrants.elem_count]
 end
 
 function perform_single_mesh_adaptation_step(forest_ptr::Ptr{p4est_t}, step::Int)
-    name = string("step_", step)
     user_data = allocate_and_set_refinement_and_coarsening_flags(forest_ptr)
-    p4est_reset_data(forest_ptr, Cint(sizeof(Cint)), init_fn_callback_2d_c, Ptr{Cvoid}(user_data))
+    p4est_reset_data(forest_ptr, Cint(sizeof(Cint)), init_fn_callback_2d_c, pointer(user_data))
     p4est_refine_ext(forest_ptr, 0, -1, refine_callback_2d_c, C_NULL, refine_replace_callback_2d_c)
     p4est_coarsen(forest_ptr, 0, coarsen_callback_2d_c, C_NULL)
     p4est_partition(forest_ptr, 1, C_NULL)
-    p4est_vtk_write_file(forest_ptr, C_NULL, name)
-    Libc.free(user_data)
+    p4est_vtk_write_file(forest_ptr, C_NULL, string("step_", step))
 end
 
 #############################################################################
