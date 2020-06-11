@@ -17,7 +17,7 @@ struct point_t x::Cdouble; y::Cdouble; end
 # Refine callback
 function my_refine( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
-    q = unsafe_wrap(Array,quadrant,1)[1]
+    q = quadrant[]
     ((q.level == 0) || (q.level < 5 && p4est_quadrant_child_id(quadrant) == 1)) && return Cint(1)
     return Cint(0)
 end
@@ -38,12 +38,14 @@ const search_point_fn_c = @cfunction(search_point_fn, Cint, (Ptr{p4est_t}, p4est
 # Main program
 #############################################################################
 
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+
 # Create a connectivity structure for the unit square.
 unitsquare_connectivity = p4est_connectivity_new_unitsquare() 
 @test unitsquare_connectivity != C_NULL
 
 # Create a new forest
-unitsquare_forest = p4est_new(MPI.COMM_WORLD, unitsquare_connectivity, 0, C_NULL, C_NULL) 
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL) 
 @test unitsquare_forest != C_NULL
 
 # Register callback function to decide for refinement. 
@@ -54,7 +56,7 @@ ptr_to_points_sc_array = sc_array_new_count(sizeof(point_t), 2)
 @test ptr_to_points_sc_array != C_NULL
 
 # Check correct number of elements and its size in sc_array
-points_sc_array = unsafe_wrap(Array, ptr_to_points_sc_array, 1)[1]
+points_sc_array = ptr_to_points_sc_array[]
 @test points_sc_array.elem_count == 2 && points_sc_array.elem_size == sizeof(point_t)
 
 # Obtain reference to first point_t 

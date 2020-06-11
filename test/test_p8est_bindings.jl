@@ -10,6 +10,7 @@ end
 #############################################################################
 # Definition of data structures and function callbacks
 #############################################################################
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 
 # Dummy callback
 dummy_callback( ::Ptr{p8est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p8est_quadrant_t}) = Cint(0)
@@ -43,7 +44,7 @@ for test_conn in [p8est_connectivity_new_periodic(),
 end
 
 # Create a new forest
-unitcube_forest = p8est_new(MPI.COMM_WORLD, unitcube_connectivity, 0, C_NULL, C_NULL) 
+unitcube_forest = p8est_new(mpicomm, unitcube_connectivity, 0, C_NULL, C_NULL) 
 @test unitcube_forest != C_NULL
 
 # Create/Destroy geometry

@@ -11,6 +11,8 @@ end
 # Definition of data structures and function callbacks
 #############################################################################
 
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+
 # Dummy callback
 dummy_callback( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t}) = Cint(0)
 
@@ -44,7 +46,7 @@ for test_conn in [p4est_connectivity_new_periodic(),
 end
 
 # Create a new forest
-unitsquare_forest = p4est_new(MPI.COMM_WORLD, unitsquare_connectivity, 0, C_NULL, C_NULL) 
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL) 
 @test unitsquare_forest != C_NULL
 
 # Create/Destroy geometry

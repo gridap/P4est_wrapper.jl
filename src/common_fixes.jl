@@ -1,11 +1,16 @@
 ################################################################
 # Base fixed datatypes
 ################################################################
-const FILE = Cvoid # File descriptor
-const ssize_t = Cssize_t
-const MPI_Comm = MPI.MPI_Comm
-const MPI_File = MPI.MPI_File
+const FILE         = Cvoid # File descriptor
+if P4EST_ENABLE_MPI
+    const MPI_Comm = MPI.MPI_Comm
+else
+    const MPI_Comm = Cint
+end
 const MPI_Datatype = MPI.MPI_Datatype
+const MPI_File     = MPI.MPI_File
+const sc_MPI_Comm  = MPI_Comm
+const ssize_t      = Cssize_t
 
 ################################################################
 # Non-wrapped but required data types
