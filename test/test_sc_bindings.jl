@@ -10,9 +10,11 @@ if !MPI.Initialized()
     MPI.Init()
 end
 
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+
 # SC library initialization
-sc_init(MPI.COMM_WORLD, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
-@test sc_is_root() ==  (MPI.Comm_rank(MPI.COMM_WORLD) == 0 ? 1 : 0)
+sc_init(mpicomm, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
+@test typeof(sc_is_root()) == Cint
 
 # SC package related API
 id = sc_package_register(C_NULL, p4est_wrapper.SC_LP_INFO, "p4est", "A forest of octrees")

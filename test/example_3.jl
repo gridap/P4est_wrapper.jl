@@ -129,11 +129,12 @@ end
 # Main program
 #############################################################################
 
-sc_init(MPI.COMM_WORLD, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+sc_init(mpicomm, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
 p4est_init(C_NULL, p4est_wrapper.SC_LP_DEFAULT)
 
 unitsquare_connectivity = p4est_connectivity_new_unitsquare()
-unitsquare_forest = p4est_new(MPI.COMM_WORLD, unitsquare_connectivity, 0, C_NULL, C_NULL)
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL)
 
 for i=1:7
     perform_single_mesh_adaptation_step(unitsquare_forest,i)

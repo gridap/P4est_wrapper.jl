@@ -38,12 +38,14 @@ const search_point_fn_c = @cfunction(search_point_fn, Cint, (Ptr{p4est_t}, p4est
 # Main program
 #############################################################################
 
+mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+
 # Create a connectivity structure for the unit square.
 unitsquare_connectivity = p4est_connectivity_new_unitsquare() 
 @test unitsquare_connectivity != C_NULL
 
 # Create a new forest
-unitsquare_forest = p4est_new(MPI.COMM_WORLD, unitsquare_connectivity, 0, C_NULL, C_NULL) 
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL) 
 @test unitsquare_forest != C_NULL
 
 # Register callback function to decide for refinement. 

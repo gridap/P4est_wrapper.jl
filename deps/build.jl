@@ -15,6 +15,9 @@ P4EST_INCLUDE_DIR  = haskey(ENV,"P4EST_INCLUDE_DIR") ? ENV["P4EST_INCLUDE_DIR"] 
 P4EST_LIB_NAME     = haskey(ENV,"P4EST_LIB_NAME") ? ENV["P4EST_LIB_NAME"] : "libp4est"
 P4EST_LIB          = haskey(ENV,"P4EST_LIB") ? ENV["P4EST_LIB"] : ""
 
+DEFAULT_P4EST_ENABLE_MPI = P4EST_DIR == P4est_jll.artifact_dir ? false : true
+P4EST_ENABLE_MPI   = haskey(ENV,"P4EST_ENABLE_MPI") ? Bool(ENV["P4EST_ENABLE_MPI"]) : DEFAULT_P4EST_ENABLE_MPI
+
 
 # Check P4EST_DIR exists
 if isdir(P4EST_DIR)
@@ -68,6 +71,7 @@ P4EST configuration:
   - P4EST_LIB_DIR         = $P4EST_LIB_DIR
   - P4EST_INCLUDE_DIR     = $P4EST_INCLUDE_DIR
   - P4EST_LIB             = $P4EST_LIB
+  - P4EST_ENABLE_MPI      = $P4EST_ENABLE_MPI
 """
 
 if !P4EST_FOUND
@@ -90,4 +94,5 @@ open(deps_jl,"w") do f
   println(f, :(const P4EST_LIB_DIR         = $P4EST_LIB_DIR))
   println(f, :(const P4EST_INCLUDE_DIR     = $P4EST_INCLUDE_DIR))
   println(f, :(const P4EST_LIB             = $P4EST_LIB))
+  println(f, :(const P4EST_ENABLE_MPI      = $P4EST_ENABLE_MPI))
 end
