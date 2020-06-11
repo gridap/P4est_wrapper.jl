@@ -1,9 +1,11 @@
 using Libdl
 
+P4EST_ARTIFACT = false
 if VERSION < v"1.3"
     DEFAULT_P4EST_ROOT_DIR = "/usr"
 else
     using P4est_jll
+    P4EST_ARTIFACT = true
     DEFAULT_P4EST_ROOT_DIR = P4est_jll.artifact_dir
 end
 
@@ -15,7 +17,7 @@ P4EST_INCLUDE_DIR  = haskey(ENV,"P4EST_INCLUDE_DIR") ? ENV["P4EST_INCLUDE_DIR"] 
 P4EST_LIB_NAME     = haskey(ENV,"P4EST_LIB_NAME") ? ENV["P4EST_LIB_NAME"] : "libp4est"
 P4EST_LIB          = haskey(ENV,"P4EST_LIB") ? ENV["P4EST_LIB"] : ""
 
-DEFAULT_P4EST_ENABLE_MPI = P4EST_DIR == P4est_jll.artifact_dir ? false : true
+DEFAULT_P4EST_ENABLE_MPI = P4EST_ARTIFACT ? false : true
 P4EST_ENABLE_MPI   = haskey(ENV,"P4EST_ENABLE_MPI") ? Bool(ENV["P4EST_ENABLE_MPI"]) : DEFAULT_P4EST_ENABLE_MPI
 
 
