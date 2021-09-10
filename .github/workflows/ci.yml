@@ -56,6 +56,7 @@ jobs:
            rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
            export P4EST_ROOT_DIR=$P4EST_INSTALL
            export JULIA_MPI_BINARY="system"
+           export JULIA_MPI_PATH="/usr/lib/x86_64-linux-gnu/openmpi/lib"
            cd $CURR_DIR 
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
