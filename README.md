@@ -2,7 +2,7 @@
 
 Julia wrappers for p4est library ([Parallel AMR on Forests of Octrees](http://www.p4est.org/))
 
-[![Build Status](https://travis-ci.com/gridap/p4est_wrapper.jl.svg?branch=master)](https://travis-ci.com/gridap/p4est_wrapper.jl)
+[![Build Status](https://github.com/gridap/p4est_wrapper.jl/workflows/CI/badge.svg?branch=master)](https://github.com/gridap/p4est_wrapper.jl/actions)
 [![Codecov](https://codecov.io/gh/gridap/p4est_wrapper.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/gridap/p4est_wrapper.jl)
 
 
