@@ -23,13 +23,13 @@ end
 function p8est_tree_array_index(sc_array_object::sc_array_t, it)
   @assert sc_array_object.elem_size == sizeof(p8est_tree_t)
   @assert it in 0:sc_array_object.elem_count
-  return Ptr{p4est_tree_t}(sc_array_object.array + sc_array_object.elem_size*it)
+  return Ptr{p8est_tree_t}(sc_array_object.array + sc_array_object.elem_size*it)
 end
 
 function p8est_quadrant_array_index(sc_array_object::sc_array_t, it)
   @assert sc_array_object.elem_size == sizeof(p8est_quadrant_t)
   @assert it < sc_array_object.elem_count
-  return Ptr{p4est_quadrant_t}(sc_array_object.array + sc_array_object.elem_size*it)
+  return Ptr{p8est_quadrant_t}(sc_array_object.array + sc_array_object.elem_size*it)
 end
 
 ################################################################
