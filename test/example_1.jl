@@ -1,5 +1,5 @@
 using MPI
-using p4est_wrapper
+using P4est_wrapper
 using Test
 
 # Initialize MPI if not initialized yet
@@ -38,17 +38,17 @@ const search_point_fn_c = @cfunction(search_point_fn, Cint, (Ptr{p4est_t}, p4est
 # Main program
 #############################################################################
 
-mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 
 # Create a connectivity structure for the unit square.
-unitsquare_connectivity = p4est_connectivity_new_unitsquare() 
+unitsquare_connectivity = p4est_connectivity_new_unitsquare()
 @test unitsquare_connectivity != C_NULL
 
 # Create a new forest
-unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL) 
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL)
 @test unitsquare_forest != C_NULL
 
-# Register callback function to decide for refinement. 
+# Register callback function to decide for refinement.
 p4est_refine(unitsquare_forest, 1, my_refine_c, C_NULL)
 
 # Create a new sc_array
@@ -59,7 +59,7 @@ ptr_to_points_sc_array = sc_array_new_count(sizeof(point_t), 2)
 points_sc_array = ptr_to_points_sc_array[]
 @test points_sc_array.elem_count == 2 && points_sc_array.elem_size == sizeof(point_t)
 
-# Obtain reference to first point_t 
+# Obtain reference to first point_t
 ptr_to_points_array = Ptr{point_t}(sc_array_index(ptr_to_points_sc_array,0))
 @test ptr_to_points_array != C_NULL
 

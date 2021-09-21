@@ -1,5 +1,5 @@
 using MPI
-using p4est_wrapper
+using P4est_wrapper
 using Test
 
 # Initialize MPI if not initialized yet
@@ -27,8 +27,8 @@ const coarsen_flag = Cint(2)
 # back function to an array of ints with as many entries as forest quadrants. This call back function
 # initializes the quadrant->p.user_data void * pointer of all quadrants such that it
 # points to the corresponding entry in the global array mentioned in the previous sentence.
-function init_fn_callback_2d(forest_ptr::Ptr{p4est_t}, 
-                            which_tree::p4est_topidx_t, 
+function init_fn_callback_2d(forest_ptr::Ptr{p4est_t},
+                            which_tree::p4est_topidx_t,
                             quadrant_ptr::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
     # Extract a reference to the first (and uniquely allowed) tree
@@ -45,8 +45,8 @@ end
 
 const init_fn_callback_2d_c = @cfunction(init_fn_callback_2d, Cvoid, (Ptr{p4est_t}, p4est_topidx_t, Ptr{p4est_quadrant_t}))
 
-function refine_callback_2d(::Ptr{p4est_t}, 
-                            which_tree::p4est_topidx_t, 
+function refine_callback_2d(::Ptr{p4est_t},
+                            which_tree::p4est_topidx_t,
                             quadrant_ptr::Ptr{p4est_quadrant_t})
     @assert which_tree == 0
     quadrant = quadrant_ptr[]
@@ -58,17 +58,17 @@ const refine_callback_2d_c = @cfunction(refine_callback_2d, Cint, (Ptr{p4est_t},
 # For each refined quadrant:
 #   num_calls is even -> leave untouched all children
 #   num_calls is odd  -> mark all children for coarsening
-function refine_replace_callback_2d(forest_ptr::Ptr{p4est_t}, 
-                                    which_tree::p4est_topidx_t, 
-                                    num_outgoing::Cint, 
-                                    outgoing_ptr::Ptr{Ptr{p4est_quadrant_t}}, 
-                                    num_incoming::Cint, 
+function refine_replace_callback_2d(forest_ptr::Ptr{p4est_t},
+                                    which_tree::p4est_topidx_t,
+                                    num_outgoing::Cint,
+                                    outgoing_ptr::Ptr{Ptr{p4est_quadrant_t}},
+                                    num_incoming::Cint,
                                     incoming_ptr::Ptr{Ptr{p4est_quadrant_t}})
     @assert which_tree   == 0
     @assert num_outgoing == 1
-    @assert num_incoming == p4est_wrapper.P4EST_CHILDREN
-    incoming = unsafe_wrap(Array, incoming_ptr, p4est_wrapper.P4EST_CHILDREN)
-    for quadrant_index = 1:p4est_wrapper.P4EST_CHILDREN
+    @assert num_incoming == P4est_wrapper.P4EST_CHILDREN
+    incoming = unsafe_wrap(Array, incoming_ptr, P4est_wrapper.P4EST_CHILDREN)
+    for quadrant_index = 1:P4est_wrapper.P4EST_CHILDREN
         quadrant = incoming[quadrant_index][]
         if (num_calls % 2 == 0)
             unsafe_store!(Ptr{Cint}(quadrant.p.user_data), nothing_flag, 1)
@@ -87,8 +87,8 @@ function coarsen_callback_2d(forest_ptr::Ptr{p4est_t},
                             quadrants_ptr::Ptr{Ptr{p4est_quadrant_t}})
     @assert which_tree == 0
     coarsen = Cint(1)
-    quadrants = unsafe_wrap(Array, quadrants_ptr, p4est_wrapper.P4EST_CHILDREN)
-    for quadrant_index = 1:p4est_wrapper.P4EST_CHILDREN
+    quadrants = unsafe_wrap(Array, quadrants_ptr, P4est_wrapper.P4EST_CHILDREN)
+    for quadrant_index = 1:P4est_wrapper.P4EST_CHILDREN
         quadrant = quadrants[quadrant_index][]
         coarsen = Cint(unsafe_wrap(Array, Ptr{Cint}(quadrant.p.user_data), 1)[] ==  coarsen_flag)
         if (!Bool(coarsen)) return coarsen end
@@ -119,9 +119,9 @@ end
 # Main program
 #############################################################################
 
-mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
-sc_init(mpicomm, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
-p4est_init(C_NULL, p4est_wrapper.SC_LP_DEFAULT)
+mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_DEFAULT)
+p4est_init(C_NULL, P4est_wrapper.SC_LP_DEFAULT)
 
 unitsquare_connectivity = p4est_connectivity_new_unitsquare()
 unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, 0, C_NULL, C_NULL)

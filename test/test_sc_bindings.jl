@@ -1,5 +1,5 @@
 using MPI
-using p4est_wrapper
+using P4est_wrapper
 using Test
 
 el_num = Cint(8)
@@ -10,18 +10,18 @@ if !MPI.Initialized()
     MPI.Init()
 end
 
-mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 
 # SC library initialization
-sc_init(mpicomm, Cint(true), Cint(true), C_NULL, p4est_wrapper.SC_LP_DEFAULT)
+sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_DEFAULT)
 @test typeof(sc_is_root()) == Cint
 
 # SC package related API
-id = sc_package_register(C_NULL, p4est_wrapper.SC_LP_INFO, "p4est", "A forest of octrees")
+id = sc_package_register(C_NULL, P4est_wrapper.SC_LP_INFO, "p4est", "A forest of octrees")
 @test sc_package_is_registered(id) == 1
 sc_package_lock(id)
 sc_package_unlock(id)
-sc_package_set_verbosity(id, p4est_wrapper.SC_LP_DEBUG)
+sc_package_set_verbosity(id, P4est_wrapper.SC_LP_DEBUG)
 sc_package_print_summary(id)
 
 # SC memory allocation/deallocation related API
@@ -56,7 +56,7 @@ sc_array_ptr = sc_array_new(el_size)
 @test sc_array_memset(sc_array_ptr,0) == nothing
 @test sc_array_reset(sc_array_ptr) == nothing
 @test sc_array_truncate(sc_array_ptr) == nothing
-@test sc_array_rewind(sc_array_ptr,2*el_num) == nothing 
+@test sc_array_rewind(sc_array_ptr,2*el_num) == nothing
 @test sc_array_resize(sc_array_ptr,2*el_num) == nothing
 @test sc_array_destroy(sc_array_ptr) == nothing
 
@@ -86,5 +86,3 @@ sc_mempool_ptr = sc_mempool_new(el_size)
 if (MPI.Initialized() && !isinteractive())
     MPI.Finalize()
 end
-
-
