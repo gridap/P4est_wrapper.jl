@@ -1,8 +1,8 @@
-# p4est_wrapper.jl
+# P4est_wrapper.jl
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [p4est_wrapper]
+Modules = [P4est_wrapper]
 ```

@@ -1,5 +1,5 @@
 using MPI
-using p4est_wrapper
+using P4est_wrapper
 using Test
 
 # Initialize MPI if not initialized yet
@@ -26,24 +26,24 @@ const my_refine_c = @cfunction(my_refine, Cint, (Ptr{p4est_t}, p4est_topidx_t, P
 # Main program
 #############################################################################
 
-mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 
 # Create a connectivity structure for the unit square.
-unitsquare_connectivity = p4est_connectivity_new_unitsquare() 
+unitsquare_connectivity = p4est_connectivity_new_unitsquare()
 @assert Bool(p4est_connectivity_is_valid(unitsquare_connectivity))
 
 # Create a new forest
-unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, sizeof(p4est_quadrant_t), C_NULL, C_NULL) 
+unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, sizeof(p4est_quadrant_t), C_NULL, C_NULL)
 @test unitsquare_forest != C_NULL
 
-# Register callback function to decide for refinement. 
+# Register callback function to decide for refinement.
 p4est_refine(unitsquare_forest, 1, my_refine_c, C_NULL)
 
 # Equally partition the forest. The partition can be by element count or by a user-defined weight.
 p4est_partition(unitsquare_forest, 0, C_NULL);
 
-# Build the ghost layer. 
-ptr_to_p4est_ghost = p4est_ghost_new(unitsquare_forest, p4est_wrapper.P4EST_CONNECT_FULL)
+# Build the ghost layer.
+ptr_to_p4est_ghost = p4est_ghost_new(unitsquare_forest, P4est_wrapper.P4EST_CONNECT_FULL)
 p4est_ghost = ptr_to_p4est_ghost[]
 
 # Obtain ghost quadrants
@@ -56,7 +56,7 @@ for i=1:p4est_ghost.mpisize
         quadrant = ptr_ghost_quadrants[j+1]
         piggy3 = quadrant.p.piggy3
         @test Bool(p4est_quadrant_is_valid(ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j)))
-        p4est_quadrant_print(p4est_wrapper.SC_LP_INFO, ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j))
+        p4est_quadrant_print(P4est_wrapper.SC_LP_INFO, ptr_ghost_quadrants+(sizeof(p4est_quadrant_t)*j))
         print("(i, j, local_num, which_tree) ($(i),$(j),$(piggy3.local_num),$(piggy3.which_tree)) \n")
     end
 end

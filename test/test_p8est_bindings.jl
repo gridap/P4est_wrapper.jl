@@ -1,5 +1,5 @@
 using MPI
-using p4est_wrapper
+using P4est_wrapper
 using Test
 
 # Initialize MPI if not initialized yet
@@ -10,7 +10,7 @@ end
 #############################################################################
 # Definition of data structures and function callbacks
 #############################################################################
-mpicomm = p4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 
 # Dummy callback
 dummy_callback( ::Ptr{p8est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p8est_quadrant_t}) = Cint(0)
@@ -30,12 +30,12 @@ unitcube_connectivity = p8est_connectivity_new_unitcube()
 @test p8est_connectivity_reduce(unitcube_connectivity) == nothing
 
 # Test new connectivities
-for test_conn in [p8est_connectivity_new_periodic(), 
+for test_conn in [p8est_connectivity_new_periodic(),
                 p8est_connectivity_new_twocubes(),
-                p8est_connectivity_new_twowrap(), 
-                p8est_connectivity_new_rotcubes(), 
-                p8est_connectivity_new_shell(), 
-                p8est_connectivity_new_sphere(), 
+                p8est_connectivity_new_twowrap(),
+                p8est_connectivity_new_rotcubes(),
+                p8est_connectivity_new_shell(),
+                p8est_connectivity_new_sphere(),
                 p8est_connectivity_new_brick(3, 2, 8, 1, 0, 1)]
     @test test_conn != C_NULL
     @test p8est_connectivity_is_valid(test_conn) == 1
@@ -44,7 +44,7 @@ for test_conn in [p8est_connectivity_new_periodic(),
 end
 
 # Create a new forest
-unitcube_forest = p8est_new(mpicomm, unitcube_connectivity, 0, C_NULL, C_NULL) 
+unitcube_forest = p8est_new(mpicomm, unitcube_connectivity, 0, C_NULL, C_NULL)
 @test unitcube_forest != C_NULL
 
 # Create/Destroy geometry
@@ -61,16 +61,16 @@ unitcube_forest_copy =  p8est_copy_ext(unitcube_forest, 1, 0)
 # Operations on forests
 @test p8est_partition(unitcube_forest, 0, C_NULL) == nothing
 @test p8est_partition_ext(unitcube_forest, 0, C_NULL) == 0
-@test p8est_balance(unitcube_forest, p4est_wrapper.P8EST_CONNECT_FULL, C_NULL) == nothing
-@test p8est_balance_ext(unitcube_forest, p4est_wrapper.P8EST_CONNECT_FULL, C_NULL, C_NULL) == nothing
+@test p8est_balance(unitcube_forest, P4est_wrapper.P8EST_CONNECT_FULL, C_NULL) == nothing
+@test p8est_balance_ext(unitcube_forest, P4est_wrapper.P8EST_CONNECT_FULL, C_NULL, C_NULL) == nothing
 @test p8est_refine(unitcube_forest, 1, dummy_callback_c, C_NULL) == nothing
 @test p8est_refine_ext(unitcube_forest, 1, -1, dummy_callback_c, C_NULL, C_NULL) == nothing
 @test p8est_coarsen(unitcube_forest, 1, dummy_callback_c, C_NULL) == nothing
 @test p8est_coarsen_ext(unitcube_forest, 1, 0, dummy_callback_c, C_NULL, C_NULL) == nothing
 @test p8est_revision(unitcube_forest) == 0
 @test typeof(p8est_checksum(unitcube_forest)) == UInt32
-@test p8est_connect_type_int(p4est_wrapper.P8EST_CONNECT_FACE) == 1
-@test unsafe_string(p8est_connect_type_string(p4est_wrapper.P8EST_CONNECT_FACE)) == "FACE"
+@test p8est_connect_type_int(P4est_wrapper.P8EST_CONNECT_FACE) == 1
+@test unsafe_string(p8est_connect_type_string(P4est_wrapper.P8EST_CONNECT_FACE)) == "FACE"
 
 # Destroy the forest
 @test p8est_destroy(unitcube_forest) == nothing
@@ -81,5 +81,3 @@ unitcube_forest_copy =  p8est_copy_ext(unitcube_forest, 1, 0)
 if (MPI.Initialized() && !isinteractive())
     MPI.Finalize()
 end
-
-
