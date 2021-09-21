@@ -1,6 +1,6 @@
 name = "p4est_wrapper"
 uuid = "3743d7c0-8adf-11ea-380b-7d33b0ecc1da"
-authors = ["Víctor Sande <vsande@cimne.upc.edu>", "Large Scale Scientific Computing"]
+authors = ["Víctor Sande <vsande@cimne.upc.edu>", "Alberto F. Martin <alberto.martin@monash.edu>"]
 version = "0.1.0"
 
 [deps]
