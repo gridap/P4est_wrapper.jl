@@ -875,3 +875,33 @@ end
 function p8est_vtk_write_footer(cont)
     ccall((:p8est_vtk_write_footer, p4est_lib), Cint, (Ptr{p8est_vtk_context_t},), cont)
 end
+
+# Julia wrapper for header: p8est_io.h
+# Generated manually
+function p8est_deflate_quadrants(p4est, data)
+  ccall((:p8est_deflate_quadrants, p4est_lib),
+        Ptr{sc_array_t}, (Ptr{p8est_t}, Ptr{Ptr{sc_array_t}}), p4est, data)
+end
+
+function p8est_inflate(mpicomm, connectivity,
+                       global_first_quadrant, pertree,
+                       quadrants, data, user_pointer)
+
+  ccall((:p8est_inflate, p4est_lib),
+        Ptr{p8est_t},
+        (MPI_Comm, Ptr{p8est_connectivity_t},
+         Ptr{p4est_gloidx_t}, Ptr{p4est_gloidx_t},
+         Ptr{sc_array_t}, Ptr{sc_array_t}, Ptr{Cvoid}),
+        mpicomm, connectivity, global_first_quadrant, pertree, quadrants, data, user_pointer)
+end
+
+# Julia wrapper for header: p8est_communication.h
+# Generated manually
+# void p4est_comm_count_pertree (p4est_t * p4est,
+#                                p4est_gloidx_t * pertree)
+function p8est_comm_count_pertree(p4est, pertree)
+  ccall((:p8est_comm_count_pertree, p4est_lib),
+        Cvoid,
+        (Ptr{p8est_t}, Ptr{p4est_gloidx_t}),
+        p4est, pertree)
+end
