@@ -852,3 +852,10 @@ function p4est_comm_count_pertree(p4est, pertree)
         (Ptr{p4est_t}, Ptr{p4est_gloidx_t}),
         p4est, pertree)
 end
+
+function p4est_comm_find_owner(p4est, which_tree, q, guess)
+  ccall((:p4est_comm_find_owner, p4est_lib),
+        Cint,
+        (Ptr{p4est_t}, p4est_locidx_t, Ptr{p4est_quadrant_t}, Cint),
+        p4est, which_tree, q, guess)
+end
