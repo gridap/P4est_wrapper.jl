@@ -46,6 +46,11 @@ function p4est_partition(p4est, allow_for_coarsening, weight_fn)
     ccall((:p4est_partition, p4est_lib), Cvoid, (Ptr{p4est_t}, Cint, p4est_weight_t), p4est, allow_for_coarsening, weight_fn)
 end
 
+function p4est_partition_given(p4est, num_quadrants_in_proc)
+    ccall((:p4est_partition_given, p4est_lib), Cvoid, (Ptr{p4est_t}, Ptr{p4est_locidx_t}), p4est, num_quadrants_in_proc)
+end
+
+
 function p4est_checksum(p4est)
     ccall((:p4est_checksum, p4est_lib), UInt32, (Ptr{p4est_t},), p4est)
 end

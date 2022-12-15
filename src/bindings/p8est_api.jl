@@ -46,6 +46,10 @@ function p8est_partition(p8est, allow_for_coarsening, weight_fn)
     ccall((:p8est_partition, p4est_lib), Cvoid, (Ptr{p8est_t}, Cint, p8est_weight_t), p8est, allow_for_coarsening, weight_fn)
 end
 
+function p8est_partition_given(p8est, num_quadrants_in_proc)
+    ccall((:p8est_partition_given, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p4est_locidx_t}), p8est, num_quadrants_in_proc)
+end
+
 function p8est_checksum(p8est)
     ccall((:p8est_checksum, p4est_lib), UInt32, (Ptr{p8est_t},), p8est)
 end
