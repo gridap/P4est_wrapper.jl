@@ -189,7 +189,7 @@ p4est_lnodes=p4est_lnodes_new(unitsquare_forest, p4est_ghost, -2)
 lnodes=p4est_lnodes[]
 num_nonlocal_nodes=lnodes.num_local_nodes-lnodes.owned_count
 nonlocal_nodes=unsafe_wrap(Array, lnodes.nonlocal_nodes,num_nonlocal_nodes)
-global_owned_count=unsafe_wrap(Array, lnodes.global_owned_count, 1)
+global_owned_count=unsafe_wrap(Array, lnodes.global_owned_count, MPI.Comm_size(MPI.COMM_WORLD))
 println(propertynames(lnodes))
 println("num_local_nodes=$(lnodes.num_local_nodes)")
 println("owned_count=$(lnodes.owned_count)")
