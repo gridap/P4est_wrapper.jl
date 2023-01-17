@@ -188,7 +188,9 @@ p4est_ghost=p4est_ghost_new(unitsquare_forest, P4est_wrapper.P4EST_CONNECT_FULL)
 p4est_lnodes=p4est_lnodes_new(unitsquare_forest, p4est_ghost, -2)
 lnodes=p4est_lnodes[]
 println(propertynames(lnodes))
-println(lnodes.num_local_nodes)
+println("num_local_nodes=$(lnodes.num_local_nodes)")
+println("owned_count=$(lnodes.owned_count)")
+
 lnodes.num_local_elements
 
 p4est_corner_faces         = [0 2; 1 2; 0 3; 1 3]
@@ -237,6 +239,9 @@ hanging_face=Vector{Cint}(undef,4)
 num_nonlocal_nodes=lnodes.num_local_nodes-lnodes.owned_count
 nonlocal_nodes=unsafe_wrap(Array, lnodes.nonlocal_nodes,num_nonlocal_nodes)
 
+println("num_nonlocal_nodes=$(num_nonlocal_nodes)")
+println("nonlocal_nodes=$(nonlocal_nodes)")
+
 for cell=1:lnodes.num_local_elements
   start=(cell-1)*lnodes.vnodes+1
   println("cell=$(cell) faces=$(element_nodes[start:start+3])")
@@ -265,7 +270,7 @@ end
 
 p4est_destroy(unitsquare_forest);
 p4est_connectivity_destroy(unitsquare_connectivity)
-sc_finalize()
+# sc_finalize()
 
 
 # Finalize MPI if initialized and session is not interactive
