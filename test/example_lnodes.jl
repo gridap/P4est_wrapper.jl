@@ -245,6 +245,9 @@ hanging_face=Vector{Cint}(undef,4)
 
 
 
+println("num_nonlocal_nodes=$(num_nonlocal_nodes)")
+println("nonlocal_nodes=$(nonlocal_nodes)")
+
 for cell=1:lnodes.num_local_elements
   start=(cell-1)*lnodes.vnodes+1
   println("cell=$(cell) faces=$(element_nodes[start:start+3])")
