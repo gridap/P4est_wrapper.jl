@@ -106,4 +106,8 @@ Note: you need the following tools:
 
 To learn more about how it works, please read the README file at [gen directory](https://github.com/gridap/P4est_wrapper.jl/tree/master/gen).
 
+## Known issues 
+ * `deps/build.jl` script issue with Julia 1.8.0. See issue [#15](https://github.com/gridap/P4est_wrapper.jl/issues/15)
+
+
 

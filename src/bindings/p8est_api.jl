@@ -46,6 +46,10 @@ function p8est_partition(p8est, allow_for_coarsening, weight_fn)
     ccall((:p8est_partition, p4est_lib), Cvoid, (Ptr{p8est_t}, Cint, p8est_weight_t), p8est, allow_for_coarsening, weight_fn)
 end
 
+function p8est_partition_given(p8est, num_quadrants_in_proc)
+    ccall((:p8est_partition_given, p4est_lib), Cvoid, (Ptr{p8est_t}, Ptr{p4est_locidx_t}), p8est, num_quadrants_in_proc)
+end
+
 function p8est_checksum(p8est)
     ccall((:p8est_checksum, p4est_lib), UInt32, (Ptr{p8est_t},), p8est)
 end
@@ -904,4 +908,11 @@ function p8est_comm_count_pertree(p4est, pertree)
         Cvoid,
         (Ptr{p8est_t}, Ptr{p4est_gloidx_t}),
         p4est, pertree)
+end
+
+function p8est_comm_find_owner(p4est, which_tree, q, guess)
+  ccall((:p8est_comm_find_owner, p4est_lib),
+        Cint,
+        (Ptr{p8est_t}, p4est_locidx_t, Ptr{p8est_quadrant_t}, Cint),
+        p4est, which_tree, q, guess)
 end
