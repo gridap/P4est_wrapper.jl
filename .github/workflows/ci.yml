@@ -13,7 +13,7 @@ jobs:
         version:
           - '1.9'
         os:
-          - ubuntu-18.04
+          - ubuntu-22.04
         arch:
           - x64
     steps:
