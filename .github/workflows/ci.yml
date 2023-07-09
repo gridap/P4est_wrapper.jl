@@ -64,7 +64,7 @@ jobs:
           Pkg.add("MPIPreferences")
 
       - name: use MPI system binary 
-        shell: julia --color=yes --project=test {0}
+        shell: julia --color=yes --project=. {0}
         run: |
           using MPIPreferences
           MPIPreferences.use_system_binary()
