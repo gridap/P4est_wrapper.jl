@@ -5,15 +5,14 @@ jobs:
     name: Tests ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     env:
-       JULIA_MPI_BINARY: "system"
        P4EST_ROOT_DIR: "/opt/p4est/2.2/"
     strategy:
       fail-fast: false
       matrix:
         version:
-          - '1.6'
+          - '1.9'
         os:
-          - ubuntu-18.04
+          - ubuntu-22.04
         arch:
           - x64
     steps:
@@ -22,20 +21,20 @@ jobs:
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - uses: actions/cache@v1
-        env:
-          cache-name: cache-artifacts
-        with:
-          path: ~/.julia/artifacts
-          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-test-${{ env.cache-name }}-
-            ${{ runner.os }}-test-
-            ${{ runner.os }}-
+      #- uses: actions/cache@v1
+      #  env:
+      #    cache-name: cache-artifacts
+      #  with:
+      #    path: ~/.julia/artifacts
+      #    key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-test-${{ env.cache-name }}-
+      #      ${{ runner.os }}-test-
+      #      ${{ runner.os }}-
       - name: Install p4est dependencies
         run: |
            sudo apt-get update 
-           sudo apt-get install -y wget gfortran g++ openmpi-bin libopenmpi2 libopenmpi-dev
+           sudo apt-get install -y wget gfortran g++ openmpi-bin openmpi-common libopenmpi-dev
       - name: Install p4est
         run: |
            # Install p4est 2.2 from sources
@@ -57,7 +56,19 @@ jobs:
            make --quiet
            make --quiet install
            rm -rf $ROOT_DIR/$TAR_FILE $SOURCES_DIR
-           cd $CURR_DIR 
+           cd $CURR_DIR
+      - name: add MPIPreferences
+        shell: julia --color=yes --project=. {0}
+        run: |
+          using Pkg
+          Pkg.add("MPIPreferences")
+
+      - name: use MPI system binary 
+        shell: julia --color=yes --project=. {0}
+        run: |
+          using MPIPreferences
+          MPIPreferences.use_system_binary()
+
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
