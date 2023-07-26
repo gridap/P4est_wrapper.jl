@@ -1,12 +1,19 @@
 using Libdl
 
-P4EST_ARTIFACT = false
-if VERSION < v"1.3"
-    DEFAULT_P4EST_ROOT_DIR = "/usr"
-else
-    using P4est_jll
-    P4EST_ARTIFACT = true
-    DEFAULT_P4EST_ROOT_DIR = P4est_jll.find_artifact_dir()
+
+
+if !(haskey(ENV,"P4EST_ROOT_DIR"))
+  P4EST_ARTIFACT = false
+  if VERSION < v"1.3"
+     DEFAULT_P4EST_ROOT_DIR = "/usr"
+  else
+     using P4est_jll
+     P4EST_ARTIFACT = true
+     DEFAULT_P4EST_ROOT_DIR = P4est_jll.find_artifact_dir()
+  end 
+else 
+  P4EST_ARTIFACT = false
+  DEFAULT_P4EST_ROOT_DIR  = ENV["P4EST_ROOT_DIR"]
 end
 
 P4EST_FOUND        = true
