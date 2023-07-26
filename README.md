@@ -52,7 +52,7 @@ julia> using P4est_wrapper
   - `MPI` 
 
 `P4est_wrapper` julia package requires `p4est` library ([Parallel AMR on Forests of Octrees](http://www.p4est.org/)), and (optionally) `MPI` to work correctly. 
-  - Latests versions of julia `MPI` use artifacts to locally install a MPI distribution. You should take care with the compatibility (version/vendor/distribution) between the parallel `p4est` and `MPI` libraries. If you want julia `MPI` library to wrap your local MPI library, you must export `JULIA_MPI_BINARY="system"` before installing the package.
+  - Latests versions of julia `MPI` use artifacts to locally install a MPI distribution. You should take care with the compatibility (version/vendor/distribution) between the parallel `p4est` and `MPI` libraries. If you want julia `MPI` library to wrap your local MPI library, you must use the MPIPreferences package.
   - Parallel `p4est` library can be manually installed in a custom path on your local machine. In order to succesfull describe your custom installation to be discovered by `P4est_wrapper`, you must export `P4EST_ROOT_DIR` environment variable pointing to the installation directory. If this environment variable is not available, and `julia >= 1.3`, `P4est_wrapper` will try to  use [`P4est_jll` artifact](https://github.com/JuliaBinaryWrappers/P4est_jll.jl), but you should take into account that this artifact is not for parallel computations (MPI not enabled). Finally, in other case `P4est_wrapper` will try to find the `p4est` library in the usual linux user library directory (`/usr/lib`).
 
 #### Basic OpenMPI installation in debian based systems
