@@ -6,7 +6,7 @@ if VERSION < v"1.3"
 else
     using P4est_jll
     P4EST_ARTIFACT = true
-    DEFAULT_P4EST_ROOT_DIR = P4est_jll.artifact_dir
+    DEFAULT_P4EST_ROOT_DIR = P4est_jll.find_artifact_dir()
 end
 
 P4EST_FOUND        = true
