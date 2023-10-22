@@ -1,8 +1,11 @@
 # Automatically generated using Clang.jl
 
 
-const P8EST_MAXLEVEL = 19
-const P8EST_QMAXLEVEL = 18
+const P8EST_OLD_MAXLEVEL = 19
+const P8EST_OLD_QMAXLEVEL = 18
+
+const P8EST_MAXLEVEL = 30
+const P8EST_QMAXLEVEL = 29
 
 # Skipping MacroDefinition: P8EST_ROOT_LEN ( ( p4est_qcoord_t ) 1 << P8EST_MAXLEVEL )
 # Skipping MacroDefinition: P8EST_QUADRANT_LEN ( l ) ( ( p4est_qcoord_t ) 1 << ( P8EST_MAXLEVEL - ( l ) ) )
@@ -26,7 +29,7 @@ struct p8est_tree
     first_desc::p8est_quadrant_t
     last_desc::p8est_quadrant_t
     quadrants_offset::p4est_locidx_t
-    quadrants_per_level::NTuple{20, p4est_locidx_t}
+    quadrants_per_level::NTuple{31, p4est_locidx_t}
     maxlevel::Int8
 end
 
@@ -106,7 +109,7 @@ const p8est_refine_t = Ptr{Cvoid}
 const p8est_coarsen_t = Ptr{Cvoid}
 const p8est_weight_t = Ptr{Cvoid}
 const P8EST_DIM = 3
-const P8EST_FACES = 2P8EST_DIM
+const P8EST_FACES = 2*P8EST_DIM
 const P8EST_CHILDREN = 8
 const P8EST_HALF = P8EST_CHILDREN / 2
 const P8EST_EDGES = 12
