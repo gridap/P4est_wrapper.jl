@@ -56,7 +56,7 @@ include(joinpath(@__DIR__, "api_fixes.jl"))
 # Export everything starting with ...
 ################################################################
 foreach(names(@__MODULE__, all=true)) do s
-    if startswith(string(s), "sc") || startswith(string(s), "p4est") || startswith(string(s), "p6est") || startswith(string(s), "p8est")
+    if startswith(string(s), "sc") || startswith(string(s), "p2est") ||  startswith(string(s), "p4est") || startswith(string(s), "p6est") || startswith(string(s), "p8est")
         @eval export $s
     end
 end

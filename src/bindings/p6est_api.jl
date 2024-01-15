@@ -183,3 +183,37 @@ end
 function p6est_ghost_checksum(p6est, ghost)
     ccall((:p6est_ghost_checksum, p4est_lib), UInt32, (Ptr{p6est_t}, Ptr{p6est_ghost_t}), p6est, ghost)
 end
+# Julia wrapper for header: p6est_lnodes.h
+# Automatically generated using Clang.jl
+
+
+function p6est_lnodes_new(p6est, ghost_layer, degree)
+    ccall((:p6est_lnodes_new, p4est_lib), Ptr{p6est_lnodes_t}, (Ptr{p6est_t}, Ptr{p6est_ghost_t}, Cint), p6est, ghost_layer, degree)
+end
+
+function p6est_lnodes_get_column_labels(p6est, lnodes)
+    ccall((:p6est_lnodes_get_column_labels, p4est_lib), Ptr{p4est_gloidx_t}, (Ptr{p6est_t}, Ptr{p8est_lnodes_t}), p6est, lnodes)
+end
+# Julia wrapper for header: p6est_vtk.h
+# Automatically generated using Clang.jl
+
+
+function p6est_vtk_write_file(p6est, filename)
+    ccall((:p6est_vtk_write_file, p4est_lib), Cvoid, (Ptr{p6est_t}, Cstring), p6est, filename)
+end
+
+function p6est_vtk_write_header(p6est, scale, write_tree, write_rank, wrap_rank, point_scalars, point_vectors, filename)
+    ccall((:p6est_vtk_write_header, p4est_lib), Cint, (Ptr{p6est_t}, Cdouble, Cint, Cint, Cint, Cstring, Cstring, Cstring), p6est, scale, write_tree, write_rank, wrap_rank, point_scalars, point_vectors, filename)
+end
+
+function p6est_vtk_write_point_scalar(p6est, filename, scalar_name, values)
+    ccall((:p6est_vtk_write_point_scalar, p4est_lib), Cint, (Ptr{p6est_t}, Cstring, Cstring, Ptr{Cdouble}), p6est, filename, scalar_name, values)
+end
+
+function p6est_vtk_write_point_vector(p6est, filename, vector_name, values)
+    ccall((:p6est_vtk_write_point_vector, p4est_lib), Cint, (Ptr{p6est_t}, Cstring, Cstring, Ptr{Cdouble}), p6est, filename, vector_name, values)
+end
+
+function p6est_vtk_write_footer(p6est, filename)
+    ccall((:p6est_vtk_write_footer, p4est_lib), Cint, (Ptr{p6est_t}, Cstring), p6est, filename)
+end
