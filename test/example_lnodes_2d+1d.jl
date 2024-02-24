@@ -34,7 +34,6 @@ end
 
 
 function p2est_quadrant_array_index(sc_array_object::sc_array_t, it)
-    println("XXX: $(sc_array_object.elem_size) $(sizeof(p2est_quadrant_t))")
     @assert sc_array_object.elem_size == sizeof(p2est_quadrant_t)
     @assert it in 0:sc_array_object.elem_count
     return Ptr{p2est_quadrant_t}(sc_array_object.array + sc_array_object.elem_size*it)
@@ -193,14 +192,15 @@ function allocate_and_set_columns_refinement_and_coarsening_flags(forest_ptr::Pt
     tree = p4est_tree_array_index(columns.trees, 0)[]
     flags = Vector{Cint}(undef,tree.quadrants.elem_count)
     flags .= nothing_flag 
-    flags[1] = refine_flag 
+    if (tree.quadrants.elem_count!=0)
+      flags[1] = refine_flag 
+    end
     return flags
     #return [i%2 == 0 ? nothing_flag : refine_flag for i = 1:tree.quadrants.elem_count]
 end
 
+p4est_corner_faces         = [0 2; 1 2; 0 3; 1 3]
 p4est_corner_face_corners  = [0  -1 0 -1; -1 0 1 -1; 1 -1 -1  0; -1 1 -1 1]
-
-
 function p4est_lnodes_decode(face_code, hanging_face)
     @assert face_code>=0
     if (face_code!=0)
@@ -359,29 +359,32 @@ mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
 sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_VERBOSE)
 p4est_init(C_NULL, P4est_wrapper.SC_LP_VERBOSE)
 
-# unitsquare_connectivity = p4est_connectivity_new_unitsquare()
-
-# p6est_connectivity = p6est_connectivity_new(unitsquare_connectivity,C_NULL,height)
-
-unitsquare_connectivity = p4est_connectivity_new_unitsquare()
-unitsquare_forest = p4est_new(mpicomm, unitsquare_connectivity, Cint(0), C_NULL, C_NULL)
-
-
 height = Vector{Cdouble}(undef,3)
 height[1]=0.0
 height[2]=0.0
 height[3]=1.0
 
-unitsquare_forest_extruded = 
-   p6est_new_from_p4est(unitsquare_forest, C_NULL, height, Cint(0), C_NULL, C_NULL, C_NULL)
+unitsquare_connectivity = p4est_connectivity_new_unitsquare()
+extruded_unitsquare_connectivity = p6est_connectivity_new(unitsquare_connectivity,C_NULL,height)
+
+unitsquare_forest_extruded = p6est_new_ext(mpicomm,
+              extruded_unitsquare_connectivity,
+              Cint(0), 
+              Cint(1), # min_level 
+              Cint(1), # min_zlevel
+              Cint(1),                       # num_zroot
+              Cint(0),                       # fill_uniform
+              Cint(1),                       # data_size 
+              C_NULL,                        # init_fn
+              C_NULL)                        # user_pointer
 
 
 function perform_single_mesh_adaptation_step(forest_ptr::Ptr{p6est_t}, step::Int)
-    user_data=allocate_and_set_columns_refinement_and_coarsening_flags(forest_ptr)
-    p6est_reset_data(forest_ptr, Cint(sizeof(Cint)), init_fn_callback_c, pointer(user_data))
+    # user_data=allocate_and_set_columns_refinement_and_coarsening_flags(forest_ptr)
+    # p6est_reset_data(forest_ptr, Cint(sizeof(Cint)), init_fn_callback_c, pointer(user_data))
     
-    p6est_refine_columns(forest_ptr, Cint(0), refine_column_fn_callback_c, C_NULL)
-    p6est_vtk_write_file(forest_ptr, string("refine_columns_step_", step))
+    # p6est_refine_columns(forest_ptr, Cint(0), refine_column_fn_callback_c, C_NULL)
+    # p6est_vtk_write_file(forest_ptr, string("refine_columns_step_", step))
     
     user_data=allocate_and_set_columns_refinement_and_coarsening_flags(forest_ptr)
     p6est_reset_data(forest_ptr, Cint(sizeof(Cint)), init_fn_callback_c, pointer(user_data))
@@ -396,10 +399,31 @@ end
 
 perform_single_mesh_adaptation_step(unitsquare_forest_extruded,1)
 #perform_single_mesh_adaptation_step(unitsquare_forest_extruded,2)
-
 p6est_balance(unitsquare_forest_extruded, P4est_wrapper.P8EST_CONNECT_FULL, C_NULL)
+p6est_partition(unitsquare_forest_extruded, C_NULL)
 
 p6est_ghost=p6est_ghost_new(unitsquare_forest_extruded, P4est_wrapper.P4EST_CONNECT_FULL)
+
+if (MPI.Comm_rank(MPI.COMM_WORLD)==0)
+  proc_offsets = unsafe_wrap(Array, p6est_ghost[].proc_offsets, p6est_ghost[].mpisize+1)
+  println(proc_offsets)
+
+  global_first_layer = unsafe_wrap(Array, unitsquare_forest_extruded[].global_first_layer, unitsquare_forest_extruded[].mpisize+1)
+  println(global_first_layer)
+
+
+  ptr_ghost_quadrants = Ptr{p2est_quadrant_t}(p6est_ghost[].ghosts.array)
+
+  for i=1:p6est_ghost[].mpisize
+    for j=proc_offsets[i]:proc_offsets[i+1]-1
+      quadrant       = ptr_ghost_quadrants[j+1]
+      piggy3         = quadrant.p.piggy3
+      println("$(i): ", piggy3.local_num+1)
+    end
+  end
+
+end 
+
 p6est_lnodes=p6est_lnodes_new(unitsquare_forest_extruded, p6est_ghost, Cint(2))
 
 lnodes=p6est_lnodes[]
@@ -417,6 +441,9 @@ println("global_offset=$(lnodes.global_offset)")
 lnodes.num_local_elements
 element_nodes = unsafe_wrap(Array, lnodes.element_nodes, lnodes.vnodes*lnodes.num_local_elements)
 face_code     = unsafe_wrap(Array, lnodes.face_code, lnodes.num_local_elements)
+
+println("face_code=$(face_code)")
+
 hanging_face  = Vector{Cint}(undef,6)
 hanging_edge  = Vector{Cint}(undef,12)
 
@@ -498,14 +525,18 @@ end
 #   end
 # end
 
-# p8est_destroy(unitsquare_forest);
-# p8est_connectivity_destroy(unitsquare_connectivity)
-# # sc_finalize()
+f()
+
+
+
+p8est_lnodes_destroy(p6est_lnodes)
+p6est_ghost_destroy(p6est_ghost)
+p6est_destroy(unitsquare_forest_extruded);
+p4est_connectivity_destroy(unitsquare_connectivity)
+# sc_finalize()
 
 
 # # Finalize MPI if initialized and session is not interactive
 # if (MPI.Initialized() && !isinteractive())
 #     MPI.Finalize()
 # end
-
-f()
