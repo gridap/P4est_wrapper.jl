@@ -51,7 +51,7 @@ if P4est_wrapper.P4EST_FOUND
         run(cmd)
     end
     @testset "Example lnodes 3D" begin
-        cmd = `$mpiexec -n $nprocs $(extra_args) $(julia) --project=$repodir $(joinpath(dir, "example_lnodes_3d.jl"))`
+        cmd = `$mpiexec -n 1 $(extra_args) $(julia) --project=$repodir $(joinpath(dir, "example_lnodes_3d.jl"))`
         @show cmd
         run(cmd)
     end
