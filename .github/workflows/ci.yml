@@ -5,7 +5,7 @@ jobs:
     name: Tests ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     env:
-       P4EST_ROOT_DIR: "/opt/p4est/2.3/"
+       P4EST_ROOT_DIR: "/opt/p4est/2.3.6/"
     strategy:
       fail-fast: false
       matrix:
