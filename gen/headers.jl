@@ -19,7 +19,9 @@ const P4EST_HEADER_FILES = [
 const P6EST_HEADER_FILES = [
     "p6est.h", 
     "p6est_extended.h", 
-    "p6est_ghost.h"]
+    "p6est_ghost.h",
+    "p6est_lnodes.h",
+    "p6est_vtk.h"]
 
 const P8EST_HEADER_FILES = [
     "p8est.h", 

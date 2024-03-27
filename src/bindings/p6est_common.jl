@@ -73,3 +73,7 @@ struct p6est_ghost
 end
 
 const p6est_ghost_t = p6est_ghost
+const p6est_lnodes_t = p8est_lnodes_t
+const p6est_lnodes_code_t = p8est_lnodes_code_t
+const p6est_lnodes_rank_t = p8est_lnodes_rank_t
+const p6est_lnodes_buffer_t = p8est_lnodes_buffer_t
