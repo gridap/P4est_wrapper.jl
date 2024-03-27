@@ -1,12 +1,12 @@
 authors = ["Victor Sande <vsande@cimne.upc.edu>", "Alberto F. Martin <alberto.f.martin@anu.edu.au>"]
 name = "P4est_wrapper"
 uuid = "3743d7c0-8adf-11ea-380b-7d33b0ecc1da"
-version = "0.2.1"
+version = "0.2.2"
 
 [compat]
 CEnum = "0.4"
 MPI = "0.20"
-P4est_jll = "2.2.0"
+P4est_jll = "2.3.0"
 julia = "1.0"
 
 [deps]
