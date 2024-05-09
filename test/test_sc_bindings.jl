@@ -13,7 +13,7 @@ end
 mpicomm = MPI.COMM_WORLD
 
 # SC library initialization
-#sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_DEFAULT)
+sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_DEFAULT)
 @test typeof(sc_is_root()) == Cint
 
 # SC package related API
