@@ -40,8 +40,12 @@ if isdir(P4EST_DIR)
     end
 
     if (cmp(P4EST_LIB,"") == 0)
-    # Check P4EST_LIB (.../libp4est.so file) exists
-        P4EST_LIB = string(Libdl.find_library(P4EST_LIB_NAME,[P4EST_LIB_DIR,P4EST_ROOT_DIR]),".",Libdl.dlext)
+        # Check P4EST_LIB (.../libp4est.so file) exists
+        if P4EST_ARTIFACT
+            P4EST_LIB = P4est_jll.get_libp4est_path()
+        else
+            P4EST_LIB = string(Libdl.find_library(P4EST_LIB_NAME,[P4EST_LIB_DIR,P4EST_ROOT_DIR]),".",Libdl.dlext)
+        end
     end
 
     if isfile(P4EST_LIB)
@@ -61,7 +65,11 @@ if isdir(P4EST_DIR)
 else
     if (cmp(P4EST_LIB,"") == 0)
         # Check P4EST_LIB (.../libp4est.so file) exists
-        P4EST_LIB = string(Libdl.find_library(P4EST_LIB_NAME,[P4EST_LIB_DIR,P4EST_ROOT_DIR]),".",Libdl.dlext)
+        if P4EST_ARTIFACT
+            P4EST_LIB = P4est_jll.get_libp4est_path()
+        else
+            P4EST_LIB = string(Libdl.find_library(P4EST_LIB_NAME,[P4EST_LIB_DIR,P4EST_ROOT_DIR]),".",Libdl.dlext)
+        end
     end
 
     if isfile(P4EST_LIB)
