@@ -73,7 +73,7 @@ end
 # Main program
 #############################################################################
 
-mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = MPI.COMM_WORLD
 sc_init(mpicomm, Cint(true), Cint(true), C_NULL, P4est_wrapper.SC_LP_DEFAULT)
 p4est_init(C_NULL, P4est_wrapper.SC_LP_DEFAULT)
 

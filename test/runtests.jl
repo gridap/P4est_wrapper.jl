@@ -6,7 +6,7 @@ using Test
 # Skip tests if library was not properly loaded
 if P4est_wrapper.P4EST_FOUND
     repodir = normpath(joinpath(@__DIR__,".."))
-    nprocs = min(Sys.CPU_THREADS, 2)
+    nprocs = P4est_wrapper.P4EST_ENABLE_MPI ? min(Sys.CPU_THREADS, 2) : 1
     dir = dirname(@__FILE__)
     julia = Base.julia_cmd()
     mpiexec = MPI.mpiexec()
@@ -16,7 +16,7 @@ if P4est_wrapper.P4EST_FOUND
        extra_args = ``
     end
     @testset "Test SC bindings" begin
-	cmd = `$mpiexec -n $nprocs $(extra_args) $(julia) --project=$repodir $(joinpath(dir, "test_sc_bindings.jl"))`
+	    cmd = `$mpiexec -n $nprocs $(extra_args) $(julia) --project=$repodir $(joinpath(dir, "test_sc_bindings.jl"))`
         @show cmd
         run(cmd)
     end

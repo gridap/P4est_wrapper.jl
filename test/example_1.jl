@@ -38,7 +38,7 @@ const search_point_fn_c = @cfunction(search_point_fn, Cint, (Ptr{p4est_t}, p4est
 # Main program
 #############################################################################
 
-mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = MPI.COMM_WORLD
 
 # Create a connectivity structure for the unit square.
 unitsquare_connectivity = p4est_connectivity_new_unitsquare()
