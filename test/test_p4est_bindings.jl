@@ -11,7 +11,7 @@ end
 # Definition of data structures and function callbacks
 #############################################################################
 
-mpicomm = P4est_wrapper.P4EST_ENABLE_MPI ? MPI.COMM_WORLD : Cint(0)
+mpicomm = MPI.COMM_WORLD
 
 # Dummy callback
 dummy_callback( ::Ptr{p4est_t}, which_tree::p4est_topidx_t, quadrant::Ptr{p4est_quadrant_t}) = Cint(0)
