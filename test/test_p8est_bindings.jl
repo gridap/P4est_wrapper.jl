@@ -2,6 +2,13 @@ using MPI
 using P4est_wrapper
 using Test
 
+@test Base.datatype_alignment(P4est_wrapper.iter_side_data_4) == 8
+@test Base.datatype_alignment(P4est_wrapper.iter_side_data_2) == 8
+@test sizeof(P4est_wrapper.p8est_iter_face_side_t) == 64
+@test fieldoffset(P4est_wrapper.p8est_iter_face_side_t, 4) == 8
+@test sizeof(P4est_wrapper.p8est_iter_edge_side_t) == 48
+@test fieldoffset(P4est_wrapper.p8est_iter_edge_side_t, 5) == 8
+
 # Initialize MPI if not initialized yet
 if !MPI.Initialized()
     MPI.Init()
