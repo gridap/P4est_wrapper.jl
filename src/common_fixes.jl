@@ -47,22 +47,22 @@ const sc_array_t = sc_array
 ################################################################
 
 function _pointer_to_c_memory(obj::S) where {S}
-    Base.unsafe_convert(Ptr{Cvoid}, [obj])
+    ref = Ref{S}(obj)
+    GC.@preserve ref Ptr{Cvoid}(Base.unsafe_convert(Ptr{S}, ref))
 end
 
 function _unsafe_reinterpret(::Type{T}, obj::S) where {T,S}
-# Use unsafe_wrap to avoid copy from unsafe_load 
-# unsafe_load(Ptr{T}(Base.unsafe_convert(Ptr{Cvoid}, Ref{S}(obj))))
-    unsafe_wrap(Array, Ptr{T}(_pointer_to_c_memory(obj)), 1)[]
+    ref = Ref{S}(obj)
+    GC.@preserve ref unsafe_load(Ptr{T}(Base.unsafe_convert(Ptr{S}, ref)))
 end
 
-    ############################################
-    # Primitive type: quadrant_data 
-    # represents the following p4est C-Unions:
-    #   - p4est_quadrant_data
-    #   - p6est_quadrant_data
-    #   - p8est_quadrant_data
-    ############################################
+############################################
+# Primitive type: quadrant_data 
+# represents the following p4est C-Unions:
+#   - p4est_quadrant_data
+#   - p6est_quadrant_data
+#   - p8est_quadrant_data
+############################################
 struct piggy1 which_tree::p4est_topidx_t; owner_rank::Cint; end
 struct piggy2 which_tree::p4est_topidx_t; from_tree::p4est_topidx_t; end
 struct piggy3 which_tree::p4est_topidx_t; local_num::p4est_locidx_t; end
@@ -108,7 +108,10 @@ iter_side_data_properties = (:full, :hanging)
 
 # Biggest data size in union (24 bytes - 192 bits)
 iter_side_data_2_union = Union{full, hanging{2}}
-primitive type iter_side_data_2 8*sizeof(iter_side_data_2_union) end
+struct iter_side_data_2
+    head::UInt64
+    tail::NTuple{24,UInt8}
+end
 
 function Base.getproperty(x::iter_side_data_2, name::Symbol)
     if name == :full
@@ -125,15 +128,18 @@ Base.propertynames(x::iter_side_data_2) = (iter_side_data_properties..., fieldna
 const p4est_iter_face_side_data = iter_side_data_2
 const p8est_iter_edge_side_data = iter_side_data_2
 
-    ############################################
-    # Primitive type: iter_side_data_4 
-    # represents the following p4est C-Unions:
-    #   - p8est_iter_face_side_data
-    ############################################
+############################################
+# Primitive type: iter_side_data_4 
+# represents the following p4est C-Unions:
+#   - p8est_iter_face_side_data
+############################################
 
 # Biggest data size in union (32 bytes - 256 bits) 
 iter_side_data_4_union = Union{full, hanging{4}}
-primitive type iter_side_data_4 8*sizeof(iter_side_data_4_union) end 
+struct iter_side_data_4
+    head::UInt64
+    tail::NTuple{48,UInt8}
+end
 
 function Base.getproperty(x::iter_side_data_4, name::Symbol)
     if name == :full
@@ -148,4 +154,3 @@ end
 Base.propertynames(x::iter_side_data_4) = (iter_side_data_properties..., fieldnames(DataType)...)
 
 const p8est_iter_face_side_data = iter_side_data_4
-
